@@ -72,9 +72,9 @@ const config = {
     cdn: "https://cdn-id.cloudfront.net/",
   },
 resend: {
-  fromNoReply: `NoReply <noreply@yourdomain.com>`,
-  fromAdmin: `Support <support@yourdomain.com>`,
-  supportEmail: "support@yourdomain.com",
+  fromNoReply: `NoReply <noreply@mg.shipfa.st>`,
+  fromAdmin: `Support <marc@mg.shipfa.st>`,
+  supportEmail: "marc@mg.shipfa.st",
 },
   colors: {
     // REQUIRED — The DaisyUI theme to use (added to the main layout.js). Leave blank for default (light & dark mode). If you any other theme than light/dark, you need to add it in config.tailwind.js in daisyui.themes.
