@@ -1,4 +1,3 @@
-// libs/resend.ts
 import { Resend } from "resend";
 import config from "@/config";
 
@@ -25,23 +24,4 @@ export const sendEmail = async ({
     html,
     ...(replyTo && { replyTo }),
   });
-};  subject: string;
-  text?: string;
-  html?: string;
-  replyTo?: string;
-}): Promise<any> => {
-  const data = {
-    from: config.mailgun.fromAdmin,
-    to: [to],
-    subject,
-    text,
-    html,
-    ...(replyTo && { "h:Reply-To": replyTo }),
-  };
-
-  await mg.messages.create(
-    (config.mailgun.subdomain ? `${config.mailgun.subdomain}.` : "") +
-      config.domainName,
-    data
-  );
 };
