@@ -1,6 +1,6 @@
-import React from "react";
 "use client";
 
+import React from "react";
 import Link from "next/link";
 import { useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
@@ -221,4 +221,4 @@ export default function Login() {
       </div>
     </main>
   );
-}
+        }
