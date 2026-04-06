@@ -71,7 +71,7 @@ const config = {
     bucketUrl: `https://bucket-name.s3.amazonaws.com/`,
     cdn: "https://cdn-id.cloudfront.net/",
   },
-resend: {
+resend?: {
   fromNoReply: `NoReply <noreply@mg.shipfa.st>`,
   fromAdmin: `Support <marc@mg.shipfa.st>`,
   supportEmail: "marc@mg.shipfa.st",
