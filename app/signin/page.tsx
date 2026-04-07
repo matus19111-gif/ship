@@ -76,7 +76,7 @@ export default function Login() {
         </Link>
       </div>
       <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight text-center mb-12">
-        Sign-in to {config.appName}{" "}
+        Sign-in to {config.appName}{"the app"}
       </h1>
 
       <div className="space-y-8 max-w-xl mx-auto">
