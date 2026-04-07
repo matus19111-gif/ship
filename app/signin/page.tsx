@@ -116,6 +116,9 @@ export default function Login() {
           Sign-up with Google
         </button>
 
-      
+       
+        </form>
+      </div>
+    </main>
   );
-          }
+}
