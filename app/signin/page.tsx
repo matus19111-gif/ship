@@ -12,7 +12,7 @@ export default function Login() {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleGoogleLogin = async (e: React.MouseEvent) => {
+  const handleGoogleLogin = async (e: MouseEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
