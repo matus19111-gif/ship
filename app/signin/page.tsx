@@ -117,7 +117,7 @@ export default function Login() {
         </button>
 
         <div className="divider text-xs text-base-content/50 font-medium">
-          OR
+          
         </div>
 
         <form
