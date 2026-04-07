@@ -37,8 +37,13 @@ export default function Login() {
             redirectTo: redirectURL,
           },
         });
-,
-    
+      } else if (type === "magic_link") {
+        await supabase.auth.signInWithOtp({
+          email,
+          options: {
+            emailRedirectTo: redirectURL,
+          },
+        });
 
         toast.success("Check your emails!");
 
