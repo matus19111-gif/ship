@@ -121,8 +121,7 @@ export default function Login() {
         </div>
 
         <form
-          className="form-control w-full space-y-4"
-          onSubmit={(e) => handleSignup(e, { type: "magic_link" })}
+          
         >
           <input
             required
