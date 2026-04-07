@@ -124,13 +124,7 @@ export default function Login() {
           
         >
           <input
-            required
-            type="email"
-            value={email}
-            autoComplete="email"
-            placeholder=""
-            className="input input-bordered w-full placeholder:opacity-60"
-            onChange={(e) => setEmail(e.target.value)}
+            
           />
 
           <button
