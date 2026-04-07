@@ -116,29 +116,6 @@ export default function Login() {
           Sign-up with Google
         </button>
 
-        <div className="divider text-xs text-base-content/50 font-medium">
-          
-        </div>
-
-        <form
-          
-        >
-          <input
-            
-          />
-
-          <button
-            className="btn btn-primary btn-block"
-            disabled={isLoading || isDisabled}
-            type="submit"
-          >
-            {isLoading && (
-              <span className="loading loading-spinner loading-xs"></span>
-            )}
-          
-          </button>
-        </form>
-      </div>
-    </main>
+      
   );
           }
