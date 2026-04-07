@@ -1,3 +1,6 @@
+import ButtonAccount from "@/components/ButtonAccount";
+
+export const dynamic = "force-dynamic";
 import { ExecutionsContainer, ExecutionsError, ExecutionsList, ExecutionsLoading } from "@/features/executions/components/executions";
 import { executionsParamsLoader } from "@/features/executions/server/params-loader";
 import { prefetchExecutions } from "@/features/executions/server/prefetch";
@@ -30,4 +33,3 @@ const Page = async ({ searchParams }: Props) => {
   );
 };
 
-export default Page;
