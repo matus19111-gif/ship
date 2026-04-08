@@ -14,7 +14,7 @@ export default function Home() {
         <Header />
       </Suspense>
       <main>
-        <Hero />
+        
         <Problem />
         <FeaturesAccordion />
         <Pricing />
