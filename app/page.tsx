@@ -1,6 +1,5 @@
 import { Suspense } from 'react'
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
 import FeaturesAccordion from "@/components/FeaturesAccordion";
 import Pricing from "@/components/Pricing";
