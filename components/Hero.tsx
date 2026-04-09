@@ -136,7 +136,7 @@ const Hero = () => {
 
               {/* Duplicate set for seamless loop */}
               <div className="flex items-center gap-12">
-                img src="/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
                 <img src="/trust/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
                 <img src="/trust/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
                 <img src="/trust/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
