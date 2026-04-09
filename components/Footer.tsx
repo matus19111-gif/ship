@@ -14,7 +14,7 @@ const Footer = () => {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[400px]"
         style={{
           background:
-            "radial-gradient(ellipse 80% 50% at 50% 110%, rgba(74, 0, 255, 0.20) 0%, transparent 70%)",
+            "radial-gradient(ellipse 80% 50% at 50% 110%, rgba(74, 0, 255, 0.30) 0%, transparent 70%)",
         }}
       />
 
