@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import config from "@/config";
-import heroImage from "/app/icon.png";
-import heroImageDark from "/app/icon.png";
+import heroImage from "/app/dashboard.png";
+import heroImageDark from "/app/dashboard.png";
 
 const Hero = () => {
   return (
