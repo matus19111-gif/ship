@@ -125,13 +125,13 @@ const Hero = () => {
             <div className="flex animate-scroll gap-12 whitespace-nowrap">
               {/* First set of logos */}
               <div className="flex items-center gap-12">
-                <img src="/app/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust5.png" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust6.png" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/app/trust/trust7.png" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust5.png" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust6.png" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust7.png" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
               </div>
 
               {/* Duplicate set for seamless loop */}
