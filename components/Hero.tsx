@@ -113,6 +113,41 @@ const Hero = () => {
             />
           </div>
         </div>
+
+        {/* Trust section with rolling logos */}
+        <div className="mt-20">
+          <p className="text-center text-sm font-semibold uppercase tracking-widest opacity-40 mb-8">
+            Trusted by 1000+ Small Sales Teams and B2B Founders
+          </p>
+
+          {/* Rolling logos carousel */}
+          <div className="relative overflow-hidden">
+            <div className="flex animate-scroll gap-12 whitespace-nowrap">
+              {/* First set of logos */}
+              <div className="flex items-center gap-12">
+                <img src="/app/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust5.png" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust6.png" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/app/trust/trust7.png" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+              </div>
+
+              {/* Duplicate set for seamless loop */}
+              <div className="flex items-center gap-12">
+                <img src="/logos/company1.svg" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company2.svg" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company3.svg" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company4.svg" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company5.svg" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company6.svg" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                <img src="/logos/company7.svg" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );
