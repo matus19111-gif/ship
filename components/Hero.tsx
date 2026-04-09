@@ -114,17 +114,6 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Tech stack */}
-        <div className="mt-12">
-          <p className="text-xs font-semibold uppercase tracking-widest opacity-40 mb-4">
-            Built with the best stack
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-40">
-            <span className="font-bold text-sm tracking-tight">Next.js</span>
-            <span className="font-bold text-sm tracking-tight">TypeScript</span>
-            <span className="font-bold text-sm tracking-tight">Supabase</span>
-            <span className="font-bold text-sm tracking-tight">Stripe</span>
-            <span className="font-bold text-sm tracking-tight">Tailwind CSS</span>
           </div>
         </div>
       </div>
