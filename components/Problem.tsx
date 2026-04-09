@@ -66,18 +66,18 @@ const Problem = () => {
         }
       `}</style>
 
-      {/* Purple background - slightly larger, full width */}
+      {/* Purple background - slightly larger, acts as frame */}
       <section className="bg-[#4a00ffcc] text-neutral-content w-full">
-        <div className="w-full px-6 py-8 md:py-10 flex justify-center">
+        <div className="w-full px-4 sm:px-6 md:px-8 py-8 md:py-10 flex justify-center">
           
-          {/* White card - full stretch horizontally */}
-          <div className="bg-[#f9f8f4] rounded-3xl w-full shadow-xl">
+          {/* White card - NOT edge-to-edge, has purple spacing around it */}
+          <div className="bg-[#f9f8f4] rounded-3xl w-full max-w-7xl shadow-xl">
             
             {/* Inner content with balanced padding */}
-            <div className="px-8 py-14 md:px-16 md:py-16 lg:px-20">
+            <div className="px-6 py-12 md:px-12 md:py-16 lg:px-16 lg:py-20">
               
               {/* Heading - centered, larger */}
-              <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight text-gray-900 mb-12 lg:mb-14 leading-tight text-center max-w-5xl mx-auto">
+              <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight text-gray-900 mb-12 lg:mb-14 leading-tight text-center">
                 Cold outreach{" "}
                 <span className="relative inline-block whitespace-nowrap">
                   <span className="relative z-10 text-red-400">won&apos;t help</span>
@@ -89,15 +89,15 @@ const Problem = () => {
                 you quickly acquire customers if you ...
               </h2>
 
-              {/* 3 columns - evenly stretched */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+              {/* 3 columns - evenly spaced */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
                 {problems.map((problem, i) => (
                   <div key={i} className="flex flex-row items-start gap-5 group">
                     {/* Icon container - larger */}
                     <div className={`shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${problem.iconBg}`}>
                       <span style={floatStyle(problem.delay)}>{problem.icon}</span>
                     </div>
-                    {/* Text - larger font, balanced */}
+                    {/* Text - larger font */}
                     <p className="text-gray-600 text-base md:text-lg leading-relaxed flex-1">
                       {problem.text}
                     </p>
