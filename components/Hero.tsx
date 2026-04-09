@@ -16,8 +16,14 @@ const trustLogos = [trust1, trust2, trust3, trust4, trust5, trust6, trust7];
 const Hero = () => {
   return (
     <section className="relative max-w-full overflow-x-hidden">
-      {/* Gradient glow blob */}
-      <div className="absolute left-1/2 top-0 z-0 ml-[-500px] h-[500px] w-[1000px] rounded-full bg-gradient opacity-10 blur-[150px]" />
+      {/* Finta-style #4a00ff radial glow */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[600px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 90% 55% at 50% -5%, rgba(74, 0, 255, 0.30) 0%, transparent 70%)",
+        }}
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-8 pt-32 pb-16 text-center">
         {/* Announcement badge */}
@@ -125,7 +131,7 @@ const Hero = () => {
 
         {/* Trust section with rolling logos */}
         <div className="mt-20">
-          <p className="text-center text-sm font-semibold uppercase tracking-widest opacity-40 mb-8">
+          <p className="text-center text-sm font-semibold uppercase tracking-widest opacity-70 mb-8">
             Trusted by 1000+ Small Sales Teams and B2B Founders
           </p>
 
@@ -152,3 +158,4 @@ const Hero = () => {
 };
 
 export default Hero;
+          
