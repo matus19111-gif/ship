@@ -8,8 +8,17 @@ import logo from "@/app/icon.png";
 
 const Footer = () => {
   return (
-    <footer className="bg-base-200 border-t border-base-content/10">
-      <div className="max-w-7xl mx-auto px-8 py-24">
+    <footer className="relative bg-base-200 border-t border-base-content/10 overflow-hidden">
+      {/* Finta-style #4a00ff radial glow — bleeds up from the bottom */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[400px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 80% 50% at 50% 110%, rgba(74, 0, 255, 0.20) 0%, transparent 70%)",
+        }}
+      />
+
+      <div className="relative z-10 max-w-7xl mx-auto px-8 py-24">
         <div className=" flex lg:items-start md:flex-row md:flex-nowrap flex-wrap flex-col">
           <div className="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
             <Link
