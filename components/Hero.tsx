@@ -129,36 +129,19 @@ const Hero = () => {
             Trusted by 1000+ Small Sales Teams and B2B Founders
           </p>
 
-          {/* Rolling logos carousel */}
-          <div className="relative overflow-hidden">
-            <div className="flex animate-scroll gap-12 whitespace-nowrap">
-              {/* First set */}
-              <div className="flex items-center gap-12">
-                {trustLogos.map((src, i) => (
+          <div className="marquee-wrapper relative overflow-hidden">
+            <div className="animate-scroll flex">
+              {[...trustLogos, ...trustLogos].map((src, i) => (
+                <div key={i} className="flex items-center mx-10 shrink-0">
                   <Image
-                    key={i}
                     src={src}
                     alt={`Company ${i + 1}`}
                     width={120}
                     height={32}
-                    className="h-8 w-auto opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all"
+                    className="h-8 w-auto transition-all"
                   />
-                ))}
-              </div>
-
-              {/* Duplicate set for seamless loop */}
-              <div className="flex items-center gap-12">
-                {trustLogos.map((src, i) => (
-                  <Image
-                    key={i}
-                    src={src}
-                    alt={`Company ${i + 1}`}
-                    width={120}
-                    height={32}
-                    className="h-8 w-auto opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all"
-                  />
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
