@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Problem from "@/components/Problem";
 import FeaturesGrid from "@/components/FeaturesGrid";
+import Testimonials11 from "@/components/Testimonials11";
 import Pricing from "@/components/Pricing";
 import FAQ from "@/components/FAQ";
 import CTA from "@/components/CTA";
@@ -18,6 +19,7 @@ export default function Home() {
         <Hero />
         <Problem />
         <FeaturesGrid />
+        <Testimonials11 />
         <Pricing />
         <FAQ />
         <CTA />
