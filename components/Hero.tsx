@@ -3,6 +3,15 @@ import Link from "next/link";
 import config from "@/config";
 import heroImage from "/app/dashboard.png";
 import heroImageDark from "/app/dashboard.png";
+import trust1 from "/app/trust1.png";
+import trust2 from "/app/trust2.png";
+import trust3 from "/app/trust3.png";
+import trust4 from "/app/trust4.png";
+import trust5 from "/app/trust5.png";
+import trust6 from "/app/trust6.png";
+import trust7 from "/app/trust7.png";
+
+const trustLogos = [trust1, trust2, trust3, trust4, trust5, trust6, trust7];
 
 const Hero = () => {
   return (
@@ -123,26 +132,32 @@ const Hero = () => {
           {/* Rolling logos carousel */}
           <div className="relative overflow-hidden">
             <div className="flex animate-scroll gap-12 whitespace-nowrap">
-              {/* First set of logos */}
+              {/* First set */}
               <div className="flex items-center gap-12">
-                <img src="/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust5.png" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust6.png" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust7.png" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                {trustLogos.map((src, i) => (
+                  <Image
+                    key={i}
+                    src={src}
+                    alt={`Company ${i + 1}`}
+                    width={120}
+                    height={32}
+                    className="h-8 w-auto opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all"
+                  />
+                ))}
               </div>
 
               {/* Duplicate set for seamless loop */}
               <div className="flex items-center gap-12">
-                <img src="/trust/trust1.png" alt="Company 1" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust2.png" alt="Company 2" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust3.png" alt="Company 3" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust4.png" alt="Company 4" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust5.png" alt="Company 5" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust6.png" alt="Company 6" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
-                <img src="/trust/trust7.png" alt="Company 7" className="h-8 opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all" />
+                {trustLogos.map((src, i) => (
+                  <Image
+                    key={i}
+                    src={src}
+                    alt={`Company ${i + 1}`}
+                    width={120}
+                    height={32}
+                    className="h-8 w-auto opacity-40 grayscale hover:opacity-70 hover:grayscale-0 transition-all"
+                  />
+                ))}
               </div>
             </div>
           </div>
