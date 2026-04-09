@@ -7,7 +7,6 @@ body {
   scroll-behavior: smooth !important;
 }
 
-/* It makes the HTML progress bar filling smooth when value change. */
 progress::-webkit-progress-value {
   transition: 0.6s width ease-out;
 }
@@ -21,21 +20,25 @@ progress::-webkit-progress-value {
   }
 }
 
-@keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .animate-scroll {
-  animation: scroll 20s linear infinite;
+  animation: marquee 30s linear infinite;
   display: flex;
-  width: fit-content;
+  width: max-content;
+  will-change: transform;
 }
 
-.animate-scroll:hover {
-  animation-play-state: paused;
+.marquee-wrapper {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+}
+
+@media (hover: hover) {
+  .animate-scroll:hover {
+    animation-play-state: paused;
+  }
 }
