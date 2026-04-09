@@ -66,42 +66,46 @@ const Problem = () => {
         }
       `}</style>
 
-      {/* Purple background - kept compact, no extra padding */}
-      <section className="bg-[#4a00ffcc] text-neutral-content">
-        <div className="mx-auto px-4 py-4 flex justify-center">
+      {/* Purple background - slightly larger, full width */}
+      <section className="bg-[#4a00ffcc] text-neutral-content w-full">
+        <div className="w-full px-6 py-8 md:py-10 flex justify-center">
+          
+          {/* White card - full stretch horizontally */}
+          <div className="bg-[#f9f8f4] rounded-3xl w-full shadow-xl">
+            
+            {/* Inner content with balanced padding */}
+            <div className="px-8 py-14 md:px-16 md:py-16 lg:px-20">
+              
+              {/* Heading - centered, larger */}
+              <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight text-gray-900 mb-12 lg:mb-14 leading-tight text-center max-w-5xl mx-auto">
+                Cold outreach{" "}
+                <span className="relative inline-block whitespace-nowrap">
+                  <span className="relative z-10 text-red-400">won&apos;t help</span>
+                  <span
+                    className="absolute inset-0 rounded-md"
+                    style={{ background: "rgba(252,165,165,0.3)", transform: "skew(-2deg)" }}
+                  />
+                </span>{" "}
+                you quickly acquire customers if you ...
+              </h2>
 
-          {/* White card - everything bigger here */}
-          <div className="bg-[#f9f8f4] rounded-3xl px-14 py-14 md:px-20 md:py-16 w-full max-w-6xl shadow-xl">
-
-            {/* Heading - bigger */}
-            <h2 className="font-extrabold text-5xl md:text-6xl tracking-tight text-gray-900 mb-12 leading-tight text-center">
-              Cold outreach{" "}
-              <span className="relative inline-block">
-                <span className="relative z-10 text-red-400">won&apos;t help</span>
-                <span
-                  className="absolute inset-0 rounded-md"
-                  style={{ background: "rgba(252,165,165,0.3)", transform: "skew(-2deg)" }}
-                />
-              </span>{" "}
-              you quickly acquire customers if you ...
-            </h2>
-
-            {/* 3 columns - more gap, bigger text */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-              {problems.map((problem, i) => (
-                <div key={i} className="flex flex-row items-start gap-5">
-                  {/* Icon container - bigger */}
-                  <div className={`shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center ${problem.iconBg}`}>
-                    <span style={floatStyle(problem.delay)}>{problem.icon}</span>
+              {/* 3 columns - evenly stretched */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 max-w-7xl mx-auto">
+                {problems.map((problem, i) => (
+                  <div key={i} className="flex flex-row items-start gap-5 group">
+                    {/* Icon container - larger */}
+                    <div className={`shrink-0 w-20 h-20 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${problem.iconBg}`}>
+                      <span style={floatStyle(problem.delay)}>{problem.icon}</span>
+                    </div>
+                    {/* Text - larger font, balanced */}
+                    <p className="text-gray-600 text-base md:text-lg leading-relaxed flex-1">
+                      {problem.text}
+                    </p>
                   </div>
-                  {/* Text - bigger font */}
-                  <p className="text-gray-500 text-lg leading-relaxed">
-                    {problem.text}
-                  </p>
-                </div>
-              ))}
+                ))}
+              </div>
+              
             </div>
-
           </div>
         </div>
       </section>
