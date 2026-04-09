@@ -1,4 +1,3 @@
-import config from "@/config";
 import ButtonCheckout from "./ButtonCheckout";
 
 // <Pricing/> displays the pricing plans for your app
@@ -53,7 +52,7 @@ const Pricing = () => {
         <div className="flex flex-col text-center w-full mb-20">
           <p className="font-medium text-primary mb-8">Simple, Transparent Pricing</p>
           <h2 className="font-bold text-3xl lg:text-5xl tracking-tight">
-            Choose the plan that's right for you
+            Choose the plan that&apos;s right for you
           </h2>
           <p className="text-lg text-base-content/80 mt-4 max-w-2xl mx-auto">
             No hidden fees. Cancel anytime. Start building today.
