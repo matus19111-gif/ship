@@ -4,12 +4,12 @@ import config from "@/config";
 import heroImage from "/app/dashboard.png";
 import heroImageDark from "/app/dashboard.png";
 import trust1 from "/app/trust1.png";
-import trust2 from "/app/trust2.png";
-import trust3 from "/app/trust3.png";
-import trust4 from "/app/trust4.png";
-import trust5 from "/app/trust5.png";
-import trust6 from "/app/trust6.png";
-import trust7 from "/app/trust7.png";
+import trust2 from "/app/trust 2.png";
+import trust3 from "/app/trust 3.png";
+import trust4 from "/app/trust 4.png";
+import trust5 from "/app/trust 5.png";
+import trust6 from "/app/trust 6.png";
+import trust7 from "/app/trust 7.png";
 
 const trustLogos = [trust1, trust2, trust3, trust4, trust5, trust6, trust7];
 
