@@ -21,7 +21,7 @@ const Hero = () => {
       <div className="relative z-10 max-w-7xl mx-auto px-8 pt-32 pb-16 text-center">
 
         {/* Announcement badge */}
-        <div className="mb-6 flex justify-center anim-badge">
+        <div className="mb-6 flex justify-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-4 py-1 text-sm">
             <span className="flex items-center gap-1.5 font-semibold text-primary">
               <span className="size-2 w-2 h-2 rounded-full bg-primary inline-block anim-dot" />
@@ -34,7 +34,7 @@ const Hero = () => {
         </div>
 
         {/* Headline */}
-        <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl anim-h1">
+        <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl">
           Ship your startup in{" "}
           <span className="text-primary relative inline-block">
             days
@@ -44,17 +44,14 @@ const Hero = () => {
         </h1>
 
         {/* Subheadline */}
-        <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed anim-sub">
+        <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed">
           {config.appDescription}. Stop wasting time on boilerplate — focus on
           what makes your product unique.
         </p>
 
         {/* CTA Buttons */}
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row anim-btns">
-          <Link
-            href="/signin"
-            className="btn btn-primary btn-wide"
-          >
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <Link href="/signin" className="btn btn-primary btn-wide">
             Get started
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -75,7 +72,7 @@ const Hero = () => {
         </div>
 
         {/* Social proof avatars */}
-        <div className="mt-10 flex flex-col items-center gap-2 anim-social">
+        <div className="mt-10 flex flex-col items-center gap-2">
           <div className="flex -space-x-2">
             {[
               "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&auto=format",
@@ -118,7 +115,7 @@ const Hero = () => {
         </div>
 
         {/* Hero image */}
-        <div className="mt-16 anim-image">
+        <div className="mt-16">
           <div className="rounded-2xl border border-base-content/10 shadow-2xl overflow-hidden anim-float">
             <Image
               src={heroImage}
@@ -131,7 +128,7 @@ const Hero = () => {
         </div>
 
         {/* Trust logos */}
-        <div className="mt-20 anim-trust">
+        <div className="mt-20">
           <p className="text-center text-sm font-semibold uppercase tracking-widest opacity-70 mb-8">
             Trusted by 1000+ Small Sales Teams and B2B Founders
           </p>
