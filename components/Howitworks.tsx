@@ -61,6 +61,7 @@ export default function HowItWorks() {
           <div
             key={i}
             onMouseEnter={() => setActiveStep(i)}
+            className="hiw-row"
             style={{
               ...s.row,
               flexDirection: i % 2 === 1 ? "row-reverse" : "row",
@@ -102,8 +103,8 @@ export default function HowItWorks() {
             {/* Visual */}
             <div style={s.visualSide}>
               <div
+                className={`hiw-card hiw-card-${i + 1}`}
                 style={{
-                  ...s.card,
                   borderColor:
                     activeStep === i ? "rgba(74,0,255,0.14)" : "rgba(0,0,0,0.06)",
                   boxShadow:
@@ -545,5 +546,15 @@ const css = `
     0%,100% { opacity:1; transform:scale(1); }
     50% { opacity:0.4; transform:scale(0.75); }
   }
+  .hiw-card {
+    animation: floatCard 3s ease-in-out infinite;
+  }
+  .hiw-card-1 { animation-delay: 0s; }
+  .hiw-card-2 { animation-delay: 1s; }
+  .hiw-card-3 { animation-delay: 2s; }
+  @keyframes floatCard {
+    0%,100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
 `;
-      
+                         
