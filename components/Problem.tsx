@@ -68,7 +68,7 @@ const Problem = () => {
 
       {/* Purple background - slightly larger, acts as frame */}
       <section className="bg-[#4a00ffcc] text-neutral-content w-full">
-        <div className="w-full px-4 sm:px-6 md:px-8 py-8 md:py-10 flex justify-center">
+        <div className="w-full px-8 sm:px-12 md:px-8 py-8 md:py-10 flex justify-center">
           
           {/* White card - NOT edge-to-edge, has purple spacing around it */}
           <div className="bg-[#f9f8f4] rounded-3xl w-full max-w-7xl shadow-xl">
