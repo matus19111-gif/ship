@@ -7,7 +7,7 @@ const CTA = () => {
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 50% 80% at 50% 50%, rgba(74, 0, 255, 0.12) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 50% 80% at 50% 50%, rgba(74, 0, 255, 0.45) 0%, transparent 70%)",
         }}
       />
 
