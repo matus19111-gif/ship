@@ -33,19 +33,20 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Headline */}
+        {/* Headline - Updated to two lines */}
         <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl">
-          Increase conversions with smart{" "}
+          Convert More Visitors
+          <br />
+          With Smart{" "}
           <span className="text-primary relative inline-block">
-            behavior-based social proof
+            Social Proof
             <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary anim-underline" />
           </span>
-          -
         </h1>
 
-        {/* Subheadline */}
+        {/* Subheadline - Updated */}
         <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed">
-          {config.appDescription}. Build instant credibility with dynamic, behavior-based social proof. Let your audience see real engagement from real users in the right moment. Remove doubt and encourage faster decisions.
+          Build instant credibility with dynamic, behavior-based social proof. Let your audience see real engagement from real users in the right moment. Remove doubt and encourage faster decisions.
         </p>
 
         {/* CTA Buttons */}
