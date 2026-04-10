@@ -1,3 +1,4 @@
+import Link from "next/link";
 import config from "@/config";
 
 const CTA = () => {
@@ -14,9 +15,9 @@ const CTA = () => {
           Don&apos;t waste time integrating APIs or designing a pricing
           section. Ship your SaaS in days, not weeks.
         </p>
-        <button className="btn btn-primary btn-wide">
+        <Link href="/signin" className="btn btn-primary btn-wide">
           Get {config.appName}
-        </button>
+        </Link>
       </div>
     </section>
   );
