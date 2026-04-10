@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import config from "@/config";
 import heroImage from "/app/dashboard.png";
-import heroImageDark from "/app/dashboard.png";
 import trust1 from "/app/trust1.png";
 import trust2 from "/app/trust 2.png";
 import trust3 from "/app/trust 3.png";
@@ -16,21 +15,16 @@ const trustLogos = [trust1, trust2, trust3, trust4, trust5, trust6, trust7];
 const Hero = () => {
   return (
     <section className="relative max-w-full overflow-x-hidden">
-      {/* Finta-style #4a00ff radial glow */}
-      <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[600px]"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 55% at 50% -5%, rgba(74, 0, 255, 0.30) 0%, transparent 70%)",
-        }}
-      />
+      {/* Radial glow */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[600px] hero-gradient" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-8 pt-32 pb-16 text-center">
+
         {/* Announcement badge */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-6 flex justify-center anim-badge">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 px-4 py-1 text-sm">
             <span className="flex items-center gap-1.5 font-semibold text-primary">
-              <span className="size-2 w-2 h-2 rounded-full bg-primary inline-block" />
+              <span className="size-2 w-2 h-2 rounded-full bg-primary inline-block anim-dot" />
               New:
             </span>
             <span className="font-medium opacity-80">
@@ -40,26 +34,33 @@ const Hero = () => {
         </div>
 
         {/* Headline */}
-        <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl">
+        <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl anim-h1">
           Ship your startup in{" "}
-          <span className="text-primary">days</span>, not weeks
+          <span className="text-primary relative inline-block">
+            days
+            <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary anim-underline" />
+          </span>
+          , not weeks
         </h1>
 
         {/* Subheadline */}
-        <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed">
-          {config.appDescription}. Stop wasting time on boilerplate â€” focus on
+        <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed anim-sub">
+          {config.appDescription}. Stop wasting time on boilerplate — focus on
           what makes your product unique.
         </p>
 
         {/* CTA Buttons */}
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href="/signin" className="btn btn-primary btn-wide">
+        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row anim-btns">
+          <Link
+            href="/signin"
+            className="btn btn-primary btn-wide"
+          >
             Get started
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
-              className="w-5 h-5"
+              className="w-5 h-5 anim-arrow"
             >
               <path
                 fillRule="evenodd"
@@ -74,7 +75,7 @@ const Hero = () => {
         </div>
 
         {/* Social proof avatars */}
-        <div className="mt-10 flex flex-col items-center gap-2">
+        <div className="mt-10 flex flex-col items-center gap-2 anim-social">
           <div className="flex -space-x-2">
             {[
               "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&auto=format",
@@ -117,8 +118,8 @@ const Hero = () => {
         </div>
 
         {/* Hero image */}
-        <div className="mt-16">
-          <div className="rounded-2xl border border-base-content/10 shadow-2xl overflow-hidden">
+        <div className="mt-16 anim-image">
+          <div className="rounded-2xl border border-base-content/10 shadow-2xl overflow-hidden anim-float">
             <Image
               src={heroImage}
               alt={`${config.appName} product screenshot`}
@@ -129,12 +130,11 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Trust section with rolling logos */}
-        <div className="mt-20">
+        {/* Trust logos */}
+        <div className="mt-20 anim-trust">
           <p className="text-center text-sm font-semibold uppercase tracking-widest opacity-70 mb-8">
             Trusted by 1000+ Small Sales Teams and B2B Founders
           </p>
-
           <div className="marquee-wrapper relative overflow-hidden">
             <div className="animate-scroll flex">
               {[...trustLogos, ...trustLogos].map((src, i) => (
@@ -144,7 +144,7 @@ const Hero = () => {
                     alt={`Company ${i + 1}`}
                     width={120}
                     height={32}
-                    className="h-8 w-auto transition-all"
+                    className="h-8 w-auto"
                   />
                 </div>
               ))}
