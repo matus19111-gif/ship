@@ -45,7 +45,7 @@ export default function NewProjectPage() {
 
       <h1 className="text-2xl font-bold mb-2">New Project</h1>
       <p className="text-base-content/60 text-sm mb-8">
-        A project = one website. You'll get an API key to install the widget.
+        A project = one website. You&apos;ll get an API key to install the widget.
       </p>
 
       <div className="space-y-4">
@@ -98,5 +98,4 @@ export default function NewProjectPage() {
       </div>
     </div>
   )
-          }
-          
+}
