@@ -1,8 +1,7 @@
-// components/ScrollReveal.tsx
 "use client";
 import { useEffect } from "react";
 
-export default function ScrollReveal() {
+export default function ScrollReveal(): null {
   useEffect(() => {
     const selector = "h1, h2, h3, p, .btn, .card, section > div";
 
