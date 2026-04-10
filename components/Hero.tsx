@@ -69,7 +69,7 @@ const Hero = () => {
             </svg>
           </Link>
           <a href="/#how-it-works" className="btn btn-ghost btn-wide">
-            See features
+            How it works
           </a>
         </div>
 
