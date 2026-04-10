@@ -45,8 +45,7 @@ const Hero = () => {
 
         {/* Subheadline */}
         <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed">
-          {config.appDescription}. Stop wasting time on boilerplate — focus on
-          what makes your product unique.
+          {config.appDescription}. Build instant credibility with dynamic, behavior-based social proof. Let your audience see real engagement from real users in the right moment. Remove doubt and encourage faster decisions.
         </p>
 
         {/* CTA Buttons */}
