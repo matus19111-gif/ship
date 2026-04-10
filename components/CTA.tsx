@@ -4,8 +4,12 @@ import config from "@/config";
 const CTA = () => {
   return (
     <section className="relative overflow-hidden bg-base-200 py-24 w-full">
-      {/* Contained glowing blob */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-primary opacity-15 blur-3xl rounded-full" />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: "radial-gradient(ellipse 50% 80% at 50% 50%, rgba(74, 0, 255, 0.12) 0%, transparent 70%)",
+        }}
+      />
 
       <div className="relative text-center flex flex-col items-center w-full px-8">
         <h2 className="font-bold text-3xl md:text-5xl tracking-tight mb-6">
