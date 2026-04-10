@@ -68,7 +68,7 @@ const Hero = () => {
               />
             </svg>
           </Link>
-          <a href="/#features" className="btn btn-ghost btn-wide">
+          <a href="/#how-it-works" className="btn btn-ghost btn-wide">
             See features
           </a>
         </div>
@@ -158,4 +158,3 @@ const Hero = () => {
 };
 
 export default Hero;
-          
