@@ -39,7 +39,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section style={s.section}>
+    <section id="how-it-works" style={s.section}>
       <style>{css}</style>
 
       {/* Header */}
