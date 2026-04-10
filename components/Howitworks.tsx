@@ -1,389 +1,517 @@
-// HowItWorks.jsx
-// Drop this component into your ShipFast/Next.js project.
-// Matches your site's dark bg, lime accent, and font style.
+import { useState, useEffect } from "react";
 
 export default function HowItWorks() {
+  const [activeStep, setActiveStep] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((s) => (s + 1) % 3);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const steps = [
     {
       number: "01",
       label: "Step One",
       title: "Sign up in seconds",
-      description: "Create your Gojiberry account and you're in.",
-      mockup: <SignupMockup />,
+      description: "Create your Gojiberry account and you're in. No credit card required.",
+      visual: <SignupVisual />,
     },
     {
       number: "02",
       label: "Step Two",
       title: "Pick your signals",
-      description:
-        "AI Agents track buyers engaging with content, competitors, influencers — or signals like funding rounds, new roles, events, and groups.",
-      mockup: <SignalsMockup />,
+      description: "AI Agents track buyers engaging with content, competitors, influencers — or signals like funding rounds, new roles, events, and groups.",
+      visual: <SignalsVisual />,
     },
     {
       number: "03",
       label: "Step Three",
       title: "Launch your outreach",
-      description: "AI sends smart LinkedIn messages that convert.",
-      mockup: <OutreachMockup />,
+      description: "AI sends smart, personalized LinkedIn messages that convert — so you can focus on closing, not prospecting.",
+      visual: <OutreachVisual />,
     },
   ];
 
   return (
-    <section className="how-it-works">
-      <style>{`
-        .how-it-works {
-          background: #0d0d0d;
-          padding: 96px 24px;
-          font-family: 'DM Sans', sans-serif;
-        }
+    <section style={s.section}>
+      <style>{css}</style>
 
-        .hiw-inner {
-          max-width: 1100px;
-          margin: 0 auto;
-        }
-
-        .hiw-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-          background: rgba(74, 0, 255, 0.10);
-          border: 1px solid rgba(74, 0, 255, 0.30);
-          border-radius: 999px;
-          padding: 5px 14px 5px 8px;
-          margin-bottom: 24px;
-        }
-
-        .hiw-badge-dot {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          background: #4a00ff;
-        }
-
-        .hiw-badge span {
-          font-size: 13px;
-          color: #4a00ff;
-        }
-
-        .hiw-heading {
-          font-size: clamp(32px, 5vw, 52px);
-          font-weight: 800;
-          color: #f5f5f0;
-          line-height: 1.1;
-          margin: 0 0 64px;
-          letter-spacing: -0.03em;
-        }
-
-        .hiw-heading em {
-          font-style: normal;
-          color: #4a00ff;
-        }
-
-        .hiw-steps {
-          display: flex;
-          flex-direction: column;
-          gap: 0;
-        }
-
-        .hiw-step {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 48px;
-          align-items: center;
-          padding: 56px 0;
-          border-top: 1px solid rgba(255,255,255,0.07);
-          position: relative;
-        }
-
-        .hiw-step:last-child {
-          border-bottom: 1px solid rgba(255,255,255,0.07);
-        }
-
-        .hiw-step:nth-child(even) .hiw-step-content {
-          order: 2;
-        }
-
-        .hiw-step:nth-child(even) .hiw-step-visual {
-          order: 1;
-        }
-
-        .hiw-step-num {
-          font-size: 80px;
-          font-weight: 900;
-          color: rgba(74, 0, 255, 0.12);
-          line-height: 1;
-          letter-spacing: -0.05em;
-          margin-bottom: -8px;
-          font-variant-numeric: tabular-nums;
-        }
-
-        .hiw-step-label {
-          font-size: 12px;
-          font-weight: 600;
-          letter-spacing: 0.12em;
-          text-transform: uppercase;
-          color: #4a00ff;
-          margin-bottom: 12px;
-        }
-
-        .hiw-step-title {
-          font-size: clamp(22px, 3vw, 30px);
-          font-weight: 700;
-          color: #f5f5f0;
-          margin: 0 0 16px;
-          letter-spacing: -0.02em;
-          line-height: 1.2;
-        }
-
-        .hiw-step-desc {
-          font-size: 16px;
-          color: #888;
-          line-height: 1.65;
-          margin: 0;
-          max-width: 380px;
-        }
-
-        .hiw-step-visual {
-          display: flex;
-          justify-content: center;
-        }
-
-        .hiw-card {
-          background: #161616;
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 20px;
-          padding: 28px;
-          width: 100%;
-          max-width: 340px;
-          box-shadow: 0 24px 64px rgba(0,0,0,0.4);
-        }
-
-        /* Signup mockup */
-        .mock-input {
-          background: #1e1e1e;
-          border: 1px solid rgba(255,255,255,0.07);
-          border-radius: 10px;
-          padding: 12px 14px;
-          margin-bottom: 10px;
-          font-size: 13px;
-          color: #555;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .mock-icon {
-          width: 14px;
-          height: 14px;
-          opacity: 0.4;
-        }
-
-        .mock-btn {
-          background: #4a00ff;
-          color: #fff;
-          border-radius: 10px;
-          padding: 12px;
-          font-weight: 700;
-          font-size: 14px;
-          text-align: center;
-          margin-top: 4px;
-          letter-spacing: 0.01em;
-        }
-
-        /* Signals mockup */
-        .mock-logo-grid {
-          display: flex;
-          gap: 10px;
-          flex-wrap: wrap;
-          justify-content: center;
-          padding: 20px 0 24px;
-        }
-
-        .mock-logo-chip {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: #222;
-          border: 1px solid rgba(255,255,255,0.07);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 18px;
-        }
-
-        .mock-tag-row {
-          display: flex;
-          gap: 6px;
-          flex-wrap: wrap;
-          margin-top: 8px;
-        }
-
-        .mock-tag {
-          background: rgba(74,0,255,0.08);
-          border: 1px solid rgba(74,0,255,0.2);
-          color: #4a00ff;
-          border-radius: 999px;
-          padding: 4px 10px;
-          font-size: 11px;
-          font-weight: 500;
-        }
-
-        /* Outreach mockup */
-        .mock-campaign {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          padding: 12px 14px;
-          background: #1e1e1e;
-          border: 1px solid rgba(255,255,255,0.06);
-          border-radius: 12px;
-          margin-bottom: 8px;
-        }
-
-        .mock-campaign-icon {
-          width: 34px;
-          height: 34px;
-          border-radius: 8px;
-          background: #252525;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 15px;
-          flex-shrink: 0;
-        }
-
-        .mock-campaign-name {
-          font-size: 13px;
-          font-weight: 600;
-          color: #e0e0e0;
-        }
-
-        .mock-campaign-rate {
-          font-size: 11px;
-          color: #555;
-          margin-top: 2px;
-        }
-
-        .mock-campaign-rate span {
-          color: #4a00ff;
-          font-weight: 600;
-        }
-
-        @media (max-width: 720px) {
-          .hiw-step {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
-          .hiw-step:nth-child(even) .hiw-step-content,
-          .hiw-step:nth-child(even) .hiw-step-visual {
-            order: unset;
-          }
-          .hiw-step-num {
-            font-size: 56px;
-          }
-        }
-      `}</style>
-
-      <div className="hiw-inner">
-        <div className="hiw-badge">
-          <div className="hiw-badge-dot" />
-          <span>How it works</span>
+      <div style={s.header}>
+        <div style={s.badge}>
+          <span style={s.badgeDot} />
+          <span style={s.badgeText}>How it works</span>
         </div>
-
-        <h2 className="hiw-heading">
-          Get started with our <em>simple<br />3 step process</em>
+        <h2 style={s.heading}>
+          Get started with our{" "}
+          <span style={s.headingAccent}>simple 3‑step process</span>
         </h2>
+        <p style={s.subheading}>From signup to first reply in under 10 minutes.</p>
+      </div>
 
-        <div className="hiw-steps">
-          {steps.map((step) => (
-            <div className="hiw-step" key={step.number}>
-              <div className="hiw-step-content">
-                <div className="hiw-step-num">{step.number}</div>
-                <div className="hiw-step-label">{step.label}</div>
-                <h3 className="hiw-step-title">{step.title}</h3>
-                <p className="hiw-step-desc">{step.description}</p>
+      <div style={s.stepsWrap}>
+        {steps.map((step, i) => (
+          <div
+            key={i}
+            onMouseEnter={() => setActiveStep(i)}
+            className="hiw-row"
+            style={{
+              ...s.row,
+              flexDirection: i % 2 === 1 ? "row-reverse" : "row",
+              opacity: activeStep === i ? 1 : 0.52,
+              transform: activeStep === i ? "scale(1)" : "scale(0.985)",
+              boxShadow: activeStep === i
+                ? "0 20px 60px rgba(74,0,255,0.08), 0 4px 16px rgba(0,0,0,0.04)"
+                : "0 2px 12px rgba(0,0,0,0.04)",
+            }}
+          >
+            {/* Text */}
+            <div style={s.textSide}>
+              <div style={s.stepNumRow}>
+                <span style={s.stepNum}>{step.number}</span>
+                <div style={{
+                  ...s.stepLine,
+                  background: activeStep === i
+                    ? "linear-gradient(90deg, #4a00ff, transparent)"
+                    : "#ebebeb",
+                }} />
               </div>
-              <div className="hiw-step-visual">
-                <div className="hiw-card">{step.mockup}</div>
+              <p style={{ ...s.stepLabel, color: activeStep === i ? "#4a00ff" : "#bbb" }}>
+                {step.label}
+              </p>
+              <h3 style={s.stepTitle}>{step.title}</h3>
+              <p style={s.stepDesc}>{step.description}</p>
+              {activeStep === i && (
+                <div style={s.activePill}>
+                  <span style={s.activeDot} className="pulse-dot" />
+                  <span style={s.activeText}>Currently viewing</span>
+                </div>
+              )}
+            </div>
+
+            {/* Visual */}
+            <div style={s.visualSide}>
+              <div style={{
+                ...s.card,
+                borderColor: activeStep === i ? "rgba(74,0,255,0.14)" : "rgba(0,0,0,0.06)",
+                boxShadow: activeStep === i
+                  ? "0 24px 64px rgba(74,0,255,0.1), 0 4px 16px rgba(0,0,0,0.04)"
+                  : "none",
+              }}>
+                {step.visual}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Dots */}
+      <div style={s.dotsRow}>
+        {steps.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActiveStep(i)}
+            style={{
+              ...s.dot,
+              background: activeStep === i ? "#4a00ff" : "#e0e0e0",
+              width: activeStep === i ? 32 : 8,
+            }}
+          />
+        ))}
       </div>
     </section>
   );
 }
 
-function SignupMockup() {
+/* ── Signup Mockup ── */
+function SignupVisual() {
   return (
     <div>
-      {["👤 Your name", "✉️ Email address", "🔒 Password", "🔒 Retype password"].map(
-        (field) => (
-          <div className="mock-input" key={field}>
-            <span style={{ fontSize: 13, color: "#444" }}>{field}</span>
-          </div>
-        )
-      )}
-      <div className="mock-btn">Sign In</div>
+      <p style={mv.cardTitle}>Create your account</p>
+      {[
+        { emoji: "👤", label: "Full name" },
+        { emoji: "✉️", label: "Email address" },
+        { emoji: "🔒", label: "Password" },
+      ].map((f) => (
+        <div key={f.label} style={mv.field}>
+          <span style={{ fontSize: 13 }}>{f.emoji}</span>
+          <span style={mv.fieldPlaceholder}>{f.label}</span>
+        </div>
+      ))}
+      <div style={mv.primaryBtn}>Sign up — it's free →</div>
+      <p style={mv.hint}>No credit card · Cancel anytime</p>
     </div>
   );
 }
 
-function SignalsMockup() {
-  const icons = ["🔗", "🪟", "👤", "💼", "📈", "in"];
-  return (
-    <div>
-      <div
-        style={{
-          width: 56,
-          height: 56,
-          background: "linear-gradient(135deg, #7c3aed, #4a00ff)",
-          borderRadius: 14,
-          margin: "0 auto 20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: 26,
-        }}
-      >
-        🎯
-      </div>
-      <div className="mock-logo-grid">
-        {icons.map((ic) => (
-          <div className="mock-logo-chip" key={ic}>
-            <span style={{ fontSize: 15 }}>{ic}</span>
-          </div>
-        ))}
-      </div>
-      <div className="mock-tag-row">
-        {["Funding rounds", "New roles", "Events", "Competitors"].map((t) => (
-          <span className="mock-tag" key={t}>{t}</span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-function OutreachMockup() {
-  const campaigns = [
-    { icon: "🏢", name: "Campaign A", rate: "18%" },
-    { icon: "⭐", name: "Campaign B", rate: "27%" },
-    { icon: "⚡", name: "Campaign C", rate: "31%" },
+/* ── Signals Mockup ── */
+function SignalsVisual() {
+  const chips = [
+    { e: "💰", l: "Funding rounds", bg: "#f0fdf4", border: "#bbf7d0", color: "#15803d" },
+    { e: "🚀", l: "New roles", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
+    { e: "📅", l: "Events", bg: "#faf5ff", border: "#e9d5ff", color: "#7c3aed" },
+    { e: "⚔️", l: "Competitors", bg: "#fff7ed", border: "#fed7aa", color: "#c2410c" },
+    { e: "👥", l: "Groups", bg: "#fdf4ff", border: "#f5d0fe", color: "#a21caf" },
+    { e: "📢", l: "Content", bg: "#f0f9ff", border: "#bae6fd", color: "#0369a1" },
   ];
   return (
     <div>
-      {campaigns.map((c) => (
-        <div className="mock-campaign" key={c.name}>
-          <div className="mock-campaign-icon">{c.icon}</div>
-          <div>
-            <div className="mock-campaign-name">{c.name}</div>
-            <div className="mock-campaign-rate">
-              Reply Rate · <span>{c.rate}</span>
-            </div>
-          </div>
+      <div style={mv.signalHeader}>
+        <div style={mv.signalIconBox}>🎯</div>
+        <div>
+          <p style={mv.cardTitle}>Choose your signals</p>
+          <p style={mv.signalSub}>AI tracks these in real-time</p>
         </div>
-      ))}
+      </div>
+      <div style={mv.chipGrid}>
+        {chips.map((c) => (
+          <div key={c.l} style={{
+            ...mv.chip,
+            background: c.bg,
+            border: `1px solid ${c.border}`,
+            color: c.color,
+          }}>
+            <span>{c.e}</span>
+            <span style={{ fontSize: 11, fontWeight: 600 }}>{c.l}</span>
+          </div>
+        ))}
+      </div>
+      <div style={mv.signalFooter}>
+        <span style={{ ...mv.dot8, background: "#22c55e" }} />
+        <span style={{ fontSize: 12, color: "#6b7280" }}>Tracking 3 signals · 240 prospects</span>
+      </div>
     </div>
   );
 }
 
+/* ── Outreach Mockup ── */
+function OutreachVisual() {
+  const rows = [
+    { icon: "🏢", name: "Campaign A", rate: 18, trend: "+2%", accent: false },
+    { icon: "⭐", name: "Campaign B", rate: 27, trend: "+5%", accent: false },
+    { icon: "⚡", name: "Campaign C", rate: 31, trend: "+8%", accent: true },
+  ];
+  return (
+    <div>
+      <div style={mv.outreachHead}>
+        <p style={mv.cardTitle}>Live Campaigns</p>
+        <span style={mv.liveBadge}>● Live</span>
+      </div>
+      {rows.map((r) => (
+        <div key={r.name} style={{
+          ...mv.campaignRow,
+          borderLeft: r.accent ? "3px solid #4a00ff" : "3px solid transparent",
+          background: r.accent ? "#faf8ff" : "#f9fafb",
+        }}>
+          <div style={mv.campaignIcon}>{r.icon}</div>
+          <div style={{ flex: 1 }}>
+            <p style={mv.campaignName}>{r.name}</p>
+            <div style={mv.barTrack}>
+              <div style={{
+                ...mv.barFill,
+                width: `${r.rate * 3}%`,
+                background: r.accent
+                  ? "linear-gradient(90deg,#4a00ff,#7c3aed)"
+                  : "#e5e7eb",
+              }} />
+            </div>
+          </div>
+          <div style={{ textAlign: "right" }}>
+            <p style={{ ...mv.rateNum, color: r.accent ? "#4a00ff" : "#374151" }}>
+              {r.rate}%
+            </p>
+            <p style={mv.trendText}>{r.trend}</p>
+          </div>
+        </div>
+      ))}
+      <div style={mv.outreachFooter}>
+        <span style={mv.aiChip}>✦ AI</span>
+        <span style={{ fontSize: 12, color: "#6b7280" }}>24 messages sent · 7 replies today</span>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Styles ─── */
+const s = {
+  section: {
+    background: "#ffffff",
+    padding: "96px 24px 72px",
+    fontFamily: "'DM Sans', sans-serif",
+  },
+  header: {
+    textAlign: "center",
+    maxWidth: 600,
+    margin: "0 auto 64px",
+  },
+  badge: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    background: "rgba(74,0,255,0.05)",
+    border: "1px solid rgba(74,0,255,0.18)",
+    borderRadius: 999,
+    padding: "5px 14px 5px 10px",
+    marginBottom: 20,
+  },
+  badgeDot: {
+    display: "inline-block",
+    width: 7,
+    height: 7,
+    borderRadius: "50%",
+    background: "#4a00ff",
+  },
+  badgeText: {
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#4a00ff",
+    letterSpacing: "0.04em",
+  },
+  heading: {
+    fontSize: "clamp(30px, 5vw, 46px)",
+    fontWeight: 800,
+    color: "#0f0f0f",
+    lineHeight: 1.1,
+    letterSpacing: "-0.03em",
+    margin: "0 0 16px",
+  },
+  headingAccent: { color: "#4a00ff" },
+  subheading: {
+    fontSize: 16,
+    color: "#6b7280",
+    lineHeight: 1.65,
+    margin: 0,
+  },
+  stepsWrap: {
+    maxWidth: 1040,
+    margin: "0 auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
+  },
+  row: {
+    display: "flex",
+    alignItems: "center",
+    gap: 52,
+    padding: "40px 44px",
+    background: "#fafafa",
+    borderRadius: 22,
+    border: "1px solid rgba(0,0,0,0.055)",
+    cursor: "default",
+    transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
+  },
+  textSide: { flex: "0 0 38%" },
+  stepNumRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 8,
+  },
+  stepNum: {
+    fontSize: 12,
+    fontWeight: 800,
+    color: "#d1d5db",
+    letterSpacing: "0.12em",
+  },
+  stepLine: {
+    flex: 1,
+    height: 2,
+    borderRadius: 2,
+    transition: "background 0.4s ease",
+  },
+  stepLabel: {
+    fontSize: 11,
+    fontWeight: 700,
+    letterSpacing: "0.14em",
+    textTransform: "uppercase",
+    margin: "0 0 10px",
+    transition: "color 0.3s ease",
+  },
+  stepTitle: {
+    fontSize: "clamp(19px, 2.5vw, 25px)",
+    fontWeight: 750,
+    color: "#0f0f0f",
+    margin: "0 0 10px",
+    letterSpacing: "-0.02em",
+    lineHeight: 1.25,
+  },
+  stepDesc: {
+    fontSize: 14.5,
+    color: "#6b7280",
+    lineHeight: 1.7,
+    margin: "0 0 14px",
+  },
+  activePill: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 6,
+  },
+  activeDot: {
+    display: "inline-block",
+    width: 6,
+    height: 6,
+    borderRadius: "50%",
+    background: "#4a00ff",
+  },
+  activeText: {
+    fontSize: 11,
+    fontWeight: 600,
+    color: "#4a00ff",
+  },
+  visualSide: { flex: 1 },
+  card: {
+    background: "#fff",
+    borderRadius: 18,
+    border: "1px solid",
+    padding: "24px 22px",
+    transition: "all 0.4s cubic-bezier(0.16,1,0.3,1)",
+  },
+  dotsRow: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+    marginTop: 44,
+  },
+  dot: {
+    height: 8,
+    borderRadius: 999,
+    border: "none",
+    cursor: "pointer",
+    padding: 0,
+    transition: "all 0.3s ease",
+  },
+};
+
+const mv = {
+  cardTitle: { fontSize: 14, fontWeight: 700, color: "#0f0f0f", margin: "0 0 14px" },
+  field: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    background: "#f9fafb",
+    border: "1px solid #e5e7eb",
+    borderRadius: 10,
+    padding: "10px 14px",
+    marginBottom: 8,
+  },
+  fieldPlaceholder: { fontSize: 13, color: "#9ca3af" },
+  primaryBtn: {
+    background: "#4a00ff",
+    color: "#fff",
+    borderRadius: 10,
+    padding: "13px",
+    fontSize: 13,
+    fontWeight: 700,
+    textAlign: "center",
+    marginTop: 10,
+    letterSpacing: "0.01em",
+  },
+  hint: { textAlign: "center", fontSize: 11, color: "#9ca3af", margin: "10px 0 0" },
+  signalHeader: { display: "flex", alignItems: "center", gap: 12, marginBottom: 14 },
+  signalIconBox: {
+    width: 38,
+    height: 38,
+    borderRadius: 10,
+    background: "linear-gradient(135deg,#6d28d9,#4a00ff)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: 18,
+    flexShrink: 0,
+  },
+  signalSub: { fontSize: 11, color: "#9ca3af", margin: "2px 0 0" },
+  chipGrid: { display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 },
+  chip: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 4,
+    padding: "4px 9px",
+    borderRadius: 999,
+    fontSize: 11,
+    fontWeight: 600,
+  },
+  signalFooter: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    paddingTop: 10,
+    borderTop: "1px solid #f3f4f6",
+  },
+  dot8: {
+    display: "inline-block",
+    width: 8,
+    height: 8,
+    borderRadius: "50%",
+    flexShrink: 0,
+  },
+  outreachHead: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  liveBadge: {
+    fontSize: 11,
+    fontWeight: 600,
+    color: "#16a34a",
+    background: "#f0fdf4",
+    border: "1px solid #bbf7d0",
+    borderRadius: 999,
+    padding: "3px 10px",
+  },
+  campaignRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: 10,
+    padding: "10px 12px",
+    borderRadius: 10,
+    marginBottom: 8,
+    transition: "all 0.3s ease",
+  },
+  campaignIcon: {
+    width: 32,
+    height: 32,
+    fontSize: 16,
+    background: "#fff",
+    border: "1px solid #e5e7eb",
+    borderRadius: 8,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    flexShrink: 0,
+  },
+  campaignName: { fontSize: 12, fontWeight: 600, color: "#374151", margin: "0 0 5px" },
+  barTrack: { height: 4, background: "#f3f4f6", borderRadius: 999, overflow: "hidden" },
+  barFill: { height: "100%", borderRadius: 999, transition: "width 0.6s ease" },
+  rateNum: { fontSize: 15, fontWeight: 800, letterSpacing: "-0.02em", margin: 0 },
+  trendText: { fontSize: 10, color: "#16a34a", fontWeight: 600, margin: "2px 0 0", textAlign: "right" },
+  outreachFooter: {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    paddingTop: 10,
+    borderTop: "1px solid #f3f4f6",
+  },
+  aiChip: {
+    fontSize: 10,
+    fontWeight: 700,
+    color: "#4a00ff",
+    background: "rgba(74,0,255,0.06)",
+    border: "1px solid rgba(74,0,255,0.15)",
+    borderRadius: 4,
+    padding: "2px 6px",
+  },
+};
+
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap');
+  .pulse-dot {
+    animation: pulseDot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(0.75); }
+  }
+`;
