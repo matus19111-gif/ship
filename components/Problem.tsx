@@ -74,7 +74,7 @@ const Problem = () => {
           <div className="bg-[#f9f8f4] rounded-3xl w-full max-w-7xl shadow-xl">
             
             {/* Inner content with balanced padding */}
-            <div className="px-12 py-28 md:px-14 md:py-18 lg:px-18 lg:py-22">
+            <div className="px-6 py-14 md:px-28 md:py-36 lg:px-18 lg:py-22">
               
               {/* Heading - centered, larger */}
               <h2 className="font-extrabold text-4xl md:text-5xl lg:text-6xl tracking-tight text-gray-900 mb-12 lg:mb-14 leading-tight text-center">
