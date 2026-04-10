@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 export default function HowItWorks() {
@@ -22,14 +24,16 @@ export default function HowItWorks() {
       number: "02",
       label: "Step Two",
       title: "Pick your signals",
-      description: "AI Agents track buyers engaging with content, competitors, influencers — or signals like funding rounds, new roles, events, and groups.",
+      description:
+        "AI Agents track buyers engaging with content, competitors, influencers \u2014 or signals like funding rounds, new roles, events, and groups.",
       visual: <SignalsVisual />,
     },
     {
       number: "03",
       label: "Step Three",
       title: "Launch your outreach",
-      description: "AI sends smart, personalized LinkedIn messages that convert — so you can focus on closing, not prospecting.",
+      description:
+        "AI sends smart, personalized LinkedIn messages that convert \u2014 so you can focus on closing, not prospecting.",
       visual: <OutreachVisual />,
     },
   ];
@@ -38,6 +42,7 @@ export default function HowItWorks() {
     <section style={s.section}>
       <style>{css}</style>
 
+      {/* Header */}
       <div style={s.header}>
         <div style={s.badge}>
           <span style={s.badgeDot} />
@@ -45,37 +50,41 @@ export default function HowItWorks() {
         </div>
         <h2 style={s.heading}>
           Get started with our{" "}
-          <span style={s.headingAccent}>simple 3‑step process</span>
+          <span style={s.headingAccent}>simple 3\u2011step process</span>
         </h2>
         <p style={s.subheading}>From signup to first reply in under 10 minutes.</p>
       </div>
 
+      {/* Steps */}
       <div style={s.stepsWrap}>
         {steps.map((step, i) => (
           <div
             key={i}
             onMouseEnter={() => setActiveStep(i)}
-            className="hiw-row"
             style={{
               ...s.row,
               flexDirection: i % 2 === 1 ? "row-reverse" : "row",
               opacity: activeStep === i ? 1 : 0.52,
               transform: activeStep === i ? "scale(1)" : "scale(0.985)",
-              boxShadow: activeStep === i
-                ? "0 20px 60px rgba(74,0,255,0.08), 0 4px 16px rgba(0,0,0,0.04)"
-                : "0 2px 12px rgba(0,0,0,0.04)",
+              boxShadow:
+                activeStep === i
+                  ? "0 20px 60px rgba(74,0,255,0.08), 0 4px 16px rgba(0,0,0,0.04)"
+                  : "0 2px 12px rgba(0,0,0,0.04)",
             }}
           >
             {/* Text */}
             <div style={s.textSide}>
               <div style={s.stepNumRow}>
                 <span style={s.stepNum}>{step.number}</span>
-                <div style={{
-                  ...s.stepLine,
-                  background: activeStep === i
-                    ? "linear-gradient(90deg, #4a00ff, transparent)"
-                    : "#ebebeb",
-                }} />
+                <div
+                  style={{
+                    ...s.stepLine,
+                    background:
+                      activeStep === i
+                        ? "linear-gradient(90deg, #4a00ff, transparent)"
+                        : "#ebebeb",
+                  }}
+                />
               </div>
               <p style={{ ...s.stepLabel, color: activeStep === i ? "#4a00ff" : "#bbb" }}>
                 {step.label}
@@ -92,13 +101,17 @@ export default function HowItWorks() {
 
             {/* Visual */}
             <div style={s.visualSide}>
-              <div style={{
-                ...s.card,
-                borderColor: activeStep === i ? "rgba(74,0,255,0.14)" : "rgba(0,0,0,0.06)",
-                boxShadow: activeStep === i
-                  ? "0 24px 64px rgba(74,0,255,0.1), 0 4px 16px rgba(0,0,0,0.04)"
-                  : "none",
-              }}>
+              <div
+                style={{
+                  ...s.card,
+                  borderColor:
+                    activeStep === i ? "rgba(74,0,255,0.14)" : "rgba(0,0,0,0.06)",
+                  boxShadow:
+                    activeStep === i
+                      ? "0 24px 64px rgba(74,0,255,0.1), 0 4px 16px rgba(0,0,0,0.04)"
+                      : "none",
+                }}
+              >
                 {step.visual}
               </div>
             </div>
@@ -124,41 +137,41 @@ export default function HowItWorks() {
   );
 }
 
-/* ── Signup Mockup ── */
+/* \u2500\u2500 Signup Mockup \u2500\u2500 */
 function SignupVisual() {
   return (
     <div>
       <p style={mv.cardTitle}>Create your account</p>
       {[
-        { emoji: "👤", label: "Full name" },
-        { emoji: "✉️", label: "Email address" },
-        { emoji: "🔒", label: "Password" },
+        { emoji: "\ud83d\udc64", label: "Full name" },
+        { emoji: "\u2709\ufe0f", label: "Email address" },
+        { emoji: "\ud83d\udd12", label: "Password" },
       ].map((f) => (
         <div key={f.label} style={mv.field}>
           <span style={{ fontSize: 13 }}>{f.emoji}</span>
           <span style={mv.fieldPlaceholder}>{f.label}</span>
         </div>
       ))}
-      <div style={mv.primaryBtn}>Sign up — it's free →</div>
-      <p style={mv.hint}>No credit card · Cancel anytime</p>
+      <div style={mv.primaryBtn}>Sign up \u2014 it&apos;s free \u2192</div>
+      <p style={mv.hint}>No credit card \u00b7 Cancel anytime</p>
     </div>
   );
 }
 
-/* ── Signals Mockup ── */
+/* \u2500\u2500 Signals Mockup \u2500\u2500 */
 function SignalsVisual() {
   const chips = [
-    { e: "💰", l: "Funding rounds", bg: "#f0fdf4", border: "#bbf7d0", color: "#15803d" },
-    { e: "🚀", l: "New roles", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
-    { e: "📅", l: "Events", bg: "#faf5ff", border: "#e9d5ff", color: "#7c3aed" },
-    { e: "⚔️", l: "Competitors", bg: "#fff7ed", border: "#fed7aa", color: "#c2410c" },
-    { e: "👥", l: "Groups", bg: "#fdf4ff", border: "#f5d0fe", color: "#a21caf" },
-    { e: "📢", l: "Content", bg: "#f0f9ff", border: "#bae6fd", color: "#0369a1" },
+    { e: "\ud83d\udcb0", l: "Funding rounds", bg: "#f0fdf4", border: "#bbf7d0", color: "#15803d" },
+    { e: "\ud83d\ude80", l: "New roles", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
+    { e: "\ud83d\udcc5", l: "Events", bg: "#faf5ff", border: "#e9d5ff", color: "#7c3aed" },
+    { e: "\u2694\ufe0f", l: "Competitors", bg: "#fff7ed", border: "#fed7aa", color: "#c2410c" },
+    { e: "\ud83d\udc65", l: "Groups", bg: "#fdf4ff", border: "#f5d0fe", color: "#a21caf" },
+    { e: "\ud83d\udce2", l: "Content", bg: "#f0f9ff", border: "#bae6fd", color: "#0369a1" },
   ];
   return (
     <div>
       <div style={mv.signalHeader}>
-        <div style={mv.signalIconBox}>🎯</div>
+        <div style={mv.signalIconBox}>\ud83c\udfaf</div>
         <div>
           <p style={mv.cardTitle}>Choose your signals</p>
           <p style={mv.signalSub}>AI tracks these in real-time</p>
@@ -166,12 +179,15 @@ function SignalsVisual() {
       </div>
       <div style={mv.chipGrid}>
         {chips.map((c) => (
-          <div key={c.l} style={{
-            ...mv.chip,
-            background: c.bg,
-            border: `1px solid ${c.border}`,
-            color: c.color,
-          }}>
+          <div
+            key={c.l}
+            style={{
+              ...mv.chip,
+              background: c.bg,
+              border: `1px solid ${c.border}`,
+              color: c.color,
+            }}
+          >
             <span>{c.e}</span>
             <span style={{ fontSize: 11, fontWeight: 600 }}>{c.l}</span>
           </div>
@@ -179,42 +195,49 @@ function SignalsVisual() {
       </div>
       <div style={mv.signalFooter}>
         <span style={{ ...mv.dot8, background: "#22c55e" }} />
-        <span style={{ fontSize: 12, color: "#6b7280" }}>Tracking 3 signals · 240 prospects</span>
+        <span style={{ fontSize: 12, color: "#6b7280" }}>
+          Tracking 3 signals \u00b7 240 prospects
+        </span>
       </div>
     </div>
   );
 }
 
-/* ── Outreach Mockup ── */
+/* \u2500\u2500 Outreach Mockup \u2500\u2500 */
 function OutreachVisual() {
   const rows = [
-    { icon: "🏢", name: "Campaign A", rate: 18, trend: "+2%", accent: false },
-    { icon: "⭐", name: "Campaign B", rate: 27, trend: "+5%", accent: false },
-    { icon: "⚡", name: "Campaign C", rate: 31, trend: "+8%", accent: true },
+    { icon: "\ud83c\udfe2", name: "Campaign A", rate: 18, trend: "+2%", accent: false },
+    { icon: "\u2b50", name: "Campaign B", rate: 27, trend: "+5%", accent: false },
+    { icon: "\u26a1", name: "Campaign C", rate: 31, trend: "+8%", accent: true },
   ];
   return (
     <div>
       <div style={mv.outreachHead}>
         <p style={mv.cardTitle}>Live Campaigns</p>
-        <span style={mv.liveBadge}>● Live</span>
+        <span style={mv.liveBadge}>\u25cf Live</span>
       </div>
       {rows.map((r) => (
-        <div key={r.name} style={{
-          ...mv.campaignRow,
-          borderLeft: r.accent ? "3px solid #4a00ff" : "3px solid transparent",
-          background: r.accent ? "#faf8ff" : "#f9fafb",
-        }}>
+        <div
+          key={r.name}
+          style={{
+            ...mv.campaignRow,
+            borderLeft: r.accent ? "3px solid #4a00ff" : "3px solid transparent",
+            background: r.accent ? "#faf8ff" : "#f9fafb",
+          }}
+        >
           <div style={mv.campaignIcon}>{r.icon}</div>
           <div style={{ flex: 1 }}>
             <p style={mv.campaignName}>{r.name}</p>
             <div style={mv.barTrack}>
-              <div style={{
-                ...mv.barFill,
-                width: `${r.rate * 3}%`,
-                background: r.accent
-                  ? "linear-gradient(90deg,#4a00ff,#7c3aed)"
-                  : "#e5e7eb",
-              }} />
+              <div
+                style={{
+                  ...mv.barFill,
+                  width: `${r.rate * 3}%`,
+                  background: r.accent
+                    ? "linear-gradient(90deg,#4a00ff,#7c3aed)"
+                    : "#e5e7eb",
+                }}
+              />
             </div>
           </div>
           <div style={{ textAlign: "right" }}>
@@ -226,15 +249,17 @@ function OutreachVisual() {
         </div>
       ))}
       <div style={mv.outreachFooter}>
-        <span style={mv.aiChip}>✦ AI</span>
-        <span style={{ fontSize: 12, color: "#6b7280" }}>24 messages sent · 7 replies today</span>
+        <span style={mv.aiChip}>\u2726 AI</span>
+        <span style={{ fontSize: 12, color: "#6b7280" }}>
+          24 messages sent \u00b7 7 replies today
+        </span>
       </div>
     </div>
   );
 }
 
-/* ─── Styles ─── */
-const s = {
+/* \u2500\u2500\u2500 Styles \u2500\u2500\u2500 */
+const s: { [key: string]: React.CSSProperties } = {
   section: {
     background: "#ffffff",
     padding: "96px 24px 72px",
@@ -384,7 +409,7 @@ const s = {
   },
 };
 
-const mv = {
+const mv: { [key: string]: React.CSSProperties } = {
   cardTitle: { fontSize: 14, fontWeight: 700, color: "#0f0f0f", margin: "0 0 14px" },
   field: {
     display: "flex",
@@ -486,7 +511,13 @@ const mv = {
   barTrack: { height: 4, background: "#f3f4f6", borderRadius: 999, overflow: "hidden" },
   barFill: { height: "100%", borderRadius: 999, transition: "width 0.6s ease" },
   rateNum: { fontSize: 15, fontWeight: 800, letterSpacing: "-0.02em", margin: 0 },
-  trendText: { fontSize: 10, color: "#16a34a", fontWeight: 600, margin: "2px 0 0", textAlign: "right" },
+  trendText: {
+    fontSize: 10,
+    color: "#16a34a",
+    fontWeight: 600,
+    margin: "2px 0 0",
+    textAlign: "right",
+  },
   outreachFooter: {
     display: "flex",
     alignItems: "center",
@@ -498,21 +529,4 @@ const mv = {
     fontSize: 10,
     fontWeight: 700,
     color: "#4a00ff",
-    background: "rgba(74,0,255,0.06)",
-    border: "1px solid rgba(74,0,255,0.15)",
-    borderRadius: 4,
-    padding: "2px 6px",
-  },
-};
-
-const css = `
-  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800&display=swap');
-  .pulse-dot {
-    animation: pulseDot 1.6s ease-in-out infinite;
-  }
-  @keyframes pulseDot {
-    0%,100% { opacity:1; transform:scale(1); }
-    50% { opacity:0.4; transform:scale(0.75); }
-  }
-`;
-          
+    background: "rgba(74,0,255,0.06
