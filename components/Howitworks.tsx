@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function HowItWorks() {
   const [activeStep, setActiveStep] = useState(0);
@@ -546,4 +546,4 @@ const css = `
     50% { opacity:0.4; transform:scale(0.75); }
   }
 `;
-
+      
