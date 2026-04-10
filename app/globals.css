@@ -37,7 +37,7 @@ progress::-webkit-progress-value {
   mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
 }
 
-/* ─── Finta-style hero glow ─────────────────────────────────────────────── */
+/* ─── Hero glow ─────────────────────────────────────────────────────────── */
 .hero-gradient {
   background:
     radial-gradient(
@@ -92,3 +92,14 @@ progress::-webkit-progress-value {
 .anim-dot   { animation: pulse-dot 2s ease-in-out infinite; }
 .anim-arrow { animation: bounce-x 1.8s ease-in-out infinite; }
 .anim-float { animation: float 5s ease-in-out infinite; }
+
+/* ─── Scroll reveal (all sections) ─────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
