@@ -35,12 +35,12 @@ const Hero = () => {
 
         {/* Headline */}
         <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl">
-          Increase conversions with smart {" "}
+          Increase conversions with smart{" "}
           <span className="text-primary relative inline-block">
-            behavior-based
+            behavior-based social proof
             <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary anim-underline" />
           </span>
-          social proof
+          -
         </h1>
 
         {/* Subheadline */}
