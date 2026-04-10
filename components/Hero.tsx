@@ -14,7 +14,7 @@ const trustLogos = [trust1, trust2, trust3, trust4, trust5, trust6, trust7];
 
 const Hero = () => {
   return (
-    <section className="relative max-w-full overflow-x-hidden">
+    <section className="relative max-w-full overflow-x-hidden pt-20">
       {/* Radial glow */}
       <div className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[600px] hero-gradient" />
 
@@ -33,20 +33,23 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Headline - Updated to two lines */}
-        <h1 className="mx-auto max-w-3xl text-5xl font-extrabold tracking-tight lg:text-7xl">
-          Convert More Visitors
-          <br />
-          With Smart{" "}
-          <span className="text-primary relative inline-block">
-            Social Proof
-            <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary anim-underline" />
+        {/* Headline - Exactly 2 lines */}
+        <h1 className="mx-auto max-w-4xl text-5xl font-extrabold tracking-tight lg:text-7xl leading-tight">
+          Convert More Visitors{" "}
+          <span className="whitespace-nowrap">
+            With Smart{" "}
+            <span className="text-primary relative inline-block">
+              Social Proof
+              <span className="absolute -bottom-1 left-0 h-[3px] w-full rounded-full bg-primary anim-underline" />
+            </span>
           </span>
         </h1>
 
         {/* Subheadline - Updated */}
-        <p className="mx-auto mt-6 max-w-xl text-lg opacity-70 leading-relaxed">
-          Build instant credibility with dynamic, behavior-based social proof. Let your audience see real engagement from real users in the right moment. Remove doubt and encourage faster decisions.
+        <p className="mx-auto mt-6 max-w-2xl text-lg opacity-70 leading-relaxed">
+          Build instant credibility with dynamic, behavior-based social proof. 
+          Let your audience see real engagement from real users in the right moment. 
+          Remove doubt and encourage faster decisions.
         </p>
 
         {/* CTA Buttons */}
@@ -120,7 +123,9 @@ const Hero = () => {
             <Image
               src={heroImage}
               alt={`${config.appName} product screenshot`}
-              className="w-full"
+              className="w-full h-auto"
+              width={1200}
+              height={800}
               priority={true}
               placeholder="blur"
             />
