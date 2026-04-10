@@ -70,7 +70,7 @@ const Problem = () => {
       <section className="bg-[#4a00ff] text-neutral-content w-full py-20 md:py-32">
         
         {/* WRAPPER: px-0 makes it touch screen edges. mx-auto keeps it centered */}
-        <div className="w-full px-2 flex justify-center">
+        <div className="w-full px-6 flex justify-center">
           
           {/* WHITE BOX: w-full and rounded-none on mobile to hit the edges. 
               md:mx-8 adds a small gap on desktop to prevent it being TOO wide. */}
