@@ -1,5 +1,5 @@
 import ButtonAccount from "@/components/ButtonAccount";
-
+import projects from "@/dashboard/projects/page";
 export const dynamic = "force-dynamic";
 
 // This is a private page: It's protected by the layout.js component which ensures the user is authenticated.
