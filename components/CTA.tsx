@@ -5,9 +5,9 @@ const CTA = () => {
   return (
     <section className="relative overflow-hidden bg-base-200 py-24 w-full">
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-x-0 top-0 h-full pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse 50% 80% at 50% 50%, rgba(74, 0, 255, 0.70) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(74, 0, 255, 0.18) 0%, transparent 100%)",
         }}
       />
 
