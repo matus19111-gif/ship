@@ -25,7 +25,7 @@ export default function HowItWorks() {
       label: "Step Two",
       title: "Pick your signals",
       description:
-        "AI Agents track buyers engaging with content, competitors, influencers \u2014 or signals like funding rounds, new roles, events, and groups.",
+        "AI Agents track buyers engaging with content, competitors, influencers — or signals like funding rounds, new roles, events, and groups.",
       visual: <SignalsVisual />,
     },
     {
@@ -33,7 +33,7 @@ export default function HowItWorks() {
       label: "Step Three",
       title: "Launch your outreach",
       description:
-        "AI sends smart, personalized LinkedIn messages that convert \u2014 so you can focus on closing, not prospecting.",
+        "AI sends smart, personalized LinkedIn messages that convert — so you can focus on closing, not prospecting.",
       visual: <OutreachVisual />,
     },
   ];
@@ -50,7 +50,7 @@ export default function HowItWorks() {
         </div>
         <h2 style={s.heading}>
           Get started with our{" "}
-          <span style={s.headingAccent}>simple 3\u2011step process</span>
+          <span style={s.headingAccent}>simple 3‑step process</span>
         </h2>
         <p style={s.subheading}>From signup to first reply in under 10 minutes.</p>
       </div>
@@ -137,41 +137,41 @@ export default function HowItWorks() {
   );
 }
 
-/* \u2500\u2500 Signup Mockup \u2500\u2500 */
+/* ── Signup Mockup ── */
 function SignupVisual() {
   return (
     <div>
       <p style={mv.cardTitle}>Create your account</p>
       {[
-        { emoji: "\ud83d\udc64", label: "Full name" },
-        { emoji: "\u2709\ufe0f", label: "Email address" },
-        { emoji: "\ud83d\udd12", label: "Password" },
+        { emoji: "👤", label: "Full name" },
+        { emoji: "✉️", label: "Email address" },
+        { emoji: "🔒", label: "Password" },
       ].map((f) => (
         <div key={f.label} style={mv.field}>
           <span style={{ fontSize: 13 }}>{f.emoji}</span>
           <span style={mv.fieldPlaceholder}>{f.label}</span>
         </div>
       ))}
-      <div style={mv.primaryBtn}>Sign up \u2014 it&apos;s free \u2192</div>
-      <p style={mv.hint}>No credit card \u00b7 Cancel anytime</p>
+      <div style={mv.primaryBtn}>Sign up — it&apos;s free →</div>
+      <p style={mv.hint}>No credit card · Cancel anytime</p>
     </div>
   );
 }
 
-/* \u2500\u2500 Signals Mockup \u2500\u2500 */
+/* ── Signals Mockup ── */
 function SignalsVisual() {
   const chips = [
-    { e: "\ud83d\udcb0", l: "Funding rounds", bg: "#f0fdf4", border: "#bbf7d0", color: "#15803d" },
-    { e: "\ud83d\ude80", l: "New roles", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
-    { e: "\ud83d\udcc5", l: "Events", bg: "#faf5ff", border: "#e9d5ff", color: "#7c3aed" },
-    { e: "\u2694\ufe0f", l: "Competitors", bg: "#fff7ed", border: "#fed7aa", color: "#c2410c" },
-    { e: "\ud83d\udc65", l: "Groups", bg: "#fdf4ff", border: "#f5d0fe", color: "#a21caf" },
-    { e: "\ud83d\udce2", l: "Content", bg: "#f0f9ff", border: "#bae6fd", color: "#0369a1" },
+    { e: "💰", l: "Funding rounds", bg: "#f0fdf4", border: "#bbf7d0", color: "#15803d" },
+    { e: "🚀", l: "New roles", bg: "#eff6ff", border: "#bfdbfe", color: "#1d4ed8" },
+    { e: "📅", l: "Events", bg: "#faf5ff", border: "#e9d5ff", color: "#7c3aed" },
+    { e: "⚔️", l: "Competitors", bg: "#fff7ed", border: "#fed7aa", color: "#c2410c" },
+    { e: "👥", l: "Groups", bg: "#fdf4ff", border: "#f5d0fe", color: "#a21caf" },
+    { e: "📢", l: "Content", bg: "#f0f9ff", border: "#bae6fd", color: "#0369a1" },
   ];
   return (
     <div>
       <div style={mv.signalHeader}>
-        <div style={mv.signalIconBox}>\ud83c\udfaf</div>
+        <div style={mv.signalIconBox}>🎯</div>
         <div>
           <p style={mv.cardTitle}>Choose your signals</p>
           <p style={mv.signalSub}>AI tracks these in real-time</p>
@@ -196,25 +196,25 @@ function SignalsVisual() {
       <div style={mv.signalFooter}>
         <span style={{ ...mv.dot8, background: "#22c55e" }} />
         <span style={{ fontSize: 12, color: "#6b7280" }}>
-          Tracking 3 signals \u00b7 240 prospects
+          Tracking 3 signals · 240 prospects
         </span>
       </div>
     </div>
   );
 }
 
-/* \u2500\u2500 Outreach Mockup \u2500\u2500 */
+/* ── Outreach Mockup ── */
 function OutreachVisual() {
   const rows = [
-    { icon: "\ud83c\udfe2", name: "Campaign A", rate: 18, trend: "+2%", accent: false },
-    { icon: "\u2b50", name: "Campaign B", rate: 27, trend: "+5%", accent: false },
-    { icon: "\u26a1", name: "Campaign C", rate: 31, trend: "+8%", accent: true },
+    { icon: "🏢", name: "Campaign A", rate: 18, trend: "+2%", accent: false },
+    { icon: "⭐", name: "Campaign B", rate: 27, trend: "+5%", accent: false },
+    { icon: "⚡", name: "Campaign C", rate: 31, trend: "+8%", accent: true },
   ];
   return (
     <div>
       <div style={mv.outreachHead}>
         <p style={mv.cardTitle}>Live Campaigns</p>
-        <span style={mv.liveBadge}>\u25cf Live</span>
+        <span style={mv.liveBadge}>● Live</span>
       </div>
       {rows.map((r) => (
         <div
@@ -249,16 +249,16 @@ function OutreachVisual() {
         </div>
       ))}
       <div style={mv.outreachFooter}>
-        <span style={mv.aiChip}>\u2726 AI</span>
+        <span style={mv.aiChip}>✦ AI</span>
         <span style={{ fontSize: 12, color: "#6b7280" }}>
-          24 messages sent \u00b7 7 replies today
+          24 messages sent · 7 replies today
         </span>
       </div>
     </div>
   );
 }
 
-/* \u2500\u2500\u2500 Styles \u2500\u2500\u2500 */
+/* ─── Styles ─── */
 const s: { [key: string]: React.CSSProperties } = {
   section: {
     background: "#ffffff",
@@ -529,4 +529,21 @@ const mv: { [key: string]: React.CSSProperties } = {
     fontSize: 10,
     fontWeight: 700,
     color: "#4a00ff",
-    background: "rgba(74,0,255,0.06
+    background: "rgba(74,0,255,0.06)",
+    border: "1px solid rgba(74,0,255,0.15)",
+    borderRadius: 4,
+    padding: "2px 6px",
+  },
+};
+
+const css = `
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
+  .pulse-dot {
+    animation: pulseDot 1.6s ease-in-out infinite;
+  }
+  @keyframes pulseDot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:0.4; transform:scale(0.75); }
+  }
+`;
+
