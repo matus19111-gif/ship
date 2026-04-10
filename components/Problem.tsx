@@ -66,20 +66,21 @@ const Problem = () => {
         }
       `}</style>
 
-      {/* 1. SECTION: Increased py-20 to py-32 to create large purple space top/bottom */}
-      <section className="bg-[#4a00ff] text-neutral-content w-full py-16 md:py-24 lg:py-32">
+      {/* SECTION: Large vertical padding (py-32) creates the purple background frame */}
+      <section className="bg-[#4a00ff] text-neutral-content w-full py-20 md:py-32">
         
-        {/* 2. WRAPPER: Changed px to small values (px-4) so the white box stretches wide */}
-        <div className="w-full px-4 md:px-6 lg:px-8 flex justify-center">
+        {/* WRAPPER: px-0 makes it touch screen edges. mx-auto keeps it centered */}
+        <div className="w-full px-0 flex justify-center">
           
-          {/* 3. WHITE BOX: max-w-7xl ensures it doesn't get TOO wide on massive monitors */}
-          <div className="bg-[#f9f8f4] rounded-[2.5rem] w-full max-w-7xl shadow-2xl overflow-hidden">
+          {/* WHITE BOX: w-full and rounded-none on mobile to hit the edges. 
+              md:mx-8 adds a small gap on desktop to prevent it being TOO wide. */}
+          <div className="bg-[#f9f8f4] w-full md:mx-8 lg:mx-12 rounded-none md:rounded-[3rem] shadow-2xl overflow-hidden">
             
-            {/* 4. INNER CONTENT: Significantly reduced py (padding-y) to make the box slim */}
-            <div className="px-6 py-12 md:px-12 md:py-16 lg:px-20 lg:py-20">
+            {/* INNER CONTENT: Reduced py-10 to py-16 to keep the box slim/short */}
+            <div className="px-6 py-12 md:px-16 md:py-16 lg:px-24 lg:py-20">
               
-              {/* Heading: Slightly smaller font and tighter margin-bottom */}
-              <h2 className="font-extrabold text-3xl md:text-4xl lg:text-5xl tracking-tight text-gray-900 mb-10 lg:mb-14 leading-tight text-center max-w-4xl mx-auto">
+              {/* Heading: Centered with max-width to prevent long lines */}
+              <h2 className="font-extrabold text-3xl md:text-5xl tracking-tight text-gray-900 mb-12 lg:mb-16 leading-tight text-center max-w-5xl mx-auto">
                 Cold outreach{" "}
                 <span className="relative inline-block whitespace-nowrap">
                   <span className="relative z-10 text-red-400">won&apos;t help</span>
@@ -91,18 +92,20 @@ const Problem = () => {
                 you quickly acquire customers if you ...
               </h2>
 
-              {/* Grid: Tighter gaps to keep the horizontal flow slim */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
+              {/* Grid: Evenly distributed 3 columns */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
                 {problems.map((problem, i) => (
-                  <div key={i} className="flex flex-row items-center md:items-start gap-4 md:gap-5 group">
-                    {/* Icons: Slightly scaled down for the slim look */}
-                    <div className={`shrink-0 w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${problem.iconBg}`}>
+                  <div key={i} className="flex flex-row items-center md:items-start gap-5 group">
+                    {/* Icon Container */}
+                    <div className={`shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center transition-transform duration-300 group-hover:scale-105 ${problem.iconBg}`}>
                       <span style={floatStyle(problem.delay)}>{problem.icon}</span>
                     </div>
-                    {/* Text: Optimized size for a wide layout */}
-                    <p className="text-gray-600 text-sm md:text-base lg:text-lg leading-relaxed flex-1">
-                      {problem.text}
-                    </p>
+                    {/* Text content */}
+                    <div className="flex-1">
+                      <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+                        {problem.text}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
