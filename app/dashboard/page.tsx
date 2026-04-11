@@ -42,17 +42,20 @@ export default async function DashboardPage() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1
-          className="text-2xl font-bold text-white mb-1"
-          style={{ fontFamily: "Georgia, serif" }}
-        >
-          {greeting()} 👋
-        </h1>
-        <p className="text-sm text-gray-500">
-          Here&apos;s what&apos;s happening with your social proof widgets.
-        </p>
+      {/* Header with Account Button */}
+      <div className="flex justify-between items-start mb-8">
+        <div>
+          <h1
+            className="text-2xl font-bold text-white mb-1"
+            style={{ fontFamily: "Georgia, serif" }}
+          >
+            {greeting()} 👋
+          </h1>
+          <p className="text-sm text-gray-500">
+            Here&apos;s what&apos;s happening with your social proof widgets.
+          </p>
+        </div>
+        <ButtonAccount />
       </div>
 
       {/* Stat cards */}
@@ -160,5 +163,4 @@ export default async function DashboardPage() {
       </div>
     </div>
   );
-              }
-                                           
+            }
