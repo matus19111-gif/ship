@@ -107,7 +107,7 @@ export default async function DashboardPage() {
       </div>
 
       {/* Projects table */}
-      <div className="bg-[#13151f] border border-[#1e2130] rounded-2xl p-6">
+      <div className="bg-[#F2F3F4] border border-[#1e2130] rounded-2xl p-6">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-white font-semibold text-[15px]">Projects</h2>
           <Link
