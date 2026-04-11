@@ -10,7 +10,7 @@ export default function Login() {
   const supabase = createClientComponentClient();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const handleSignup = async () => {
+  const handleLogin = async () => {
     setIsLoading(true);
     try {
       const redirectURL = window.location.origin + "/api/auth/callback";
@@ -29,21 +29,20 @@ export default function Login() {
   };
 
   return (
-    // Background stays the same as your app/config
     <main className="min-h-screen flex items-center justify-center bg-base-200 p-4" data-theme={config.colors.theme}>
       
-      {/* The White Card (Modal style) */}
+      {/* The White Card */}
       <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full text-center border border-gray-100">
         
         <h1 className="text-xl font-bold text-gray-800 mb-6">
-          Create an account
+          Create an account or sign in
         </h1>
 
         <div className="space-y-4">
           {/* Google Button */}
           <button
             className="btn btn-block bg-white hover:bg-gray-50 text-gray-700 border-gray-300 normal-case font-medium flex items-center justify-center gap-3"
-            onClick={handleSignup}
+            onClick={handleLogin}
             disabled={isLoading}
           >
             {isLoading ? (
@@ -56,11 +55,11 @@ export default function Login() {
                 <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" />
               </svg>
             )}
-            Sign up with Google
+            Sign in with Google
           </button>
         </div>
 
-        {/* Trust Badges (Social Proof) */}
+        {/* Social Proof Section */}
         <div className="mt-6 text-left space-y-2 text-sm text-gray-600 border-t border-gray-100 pt-6">
           <p className="flex items-center gap-2">
             ✅ <span className="font-medium">Used by 1k+ users</span>
@@ -73,17 +72,7 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Divider */}
-        <div className="divider text-xs text-gray-400 my-6">or</div>
-
-        <p className="text-sm text-gray-600">
-          Already have an account?{" "}
-          <Link href="/login" className="text-blue-600 font-semibold hover:underline">
-            Log in →
-          </Link>
-        </p>
-
-        {/* Terms and Conditions */}
+        {/* Terms and Conditions Only */}
         <div className="mt-8 text-[11px] text-gray-400 leading-relaxed">
           By proceeding, you agree to the{" "}
           <Link href="/terms" className="underline hover:text-gray-600">Terms and Conditions</Link>{" "}
