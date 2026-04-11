@@ -20,7 +20,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     .order("created_at", { ascending: false });
 
   return (
-    <div className="flex min-h-screen bg-[#0f1117]">
+    <div className="flex min-h-screen bg-[#F2F3F4]">
       <DashboardSidebar
         projects={projects ?? []}
         userEmail={session.user.email ?? ""}
