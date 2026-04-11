@@ -27,7 +27,7 @@ export default async function Dashboard() {
         .from("events")
         .select("project_id")
         .in("project_id", projectIds)
-    : { data: [] };
+    : { data: [] as { project_id: string }[] };
 
   // Build a map: projectId → event count
   const countMap: Record<string, number> = {};
