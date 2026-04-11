@@ -1,27 +1,21 @@
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
-import ButtonAccount from "@/components/ButtonAccount";
 
 export const dynamic = "force-dynamic";
 
-export default async function Dashboard() {
+export default async function DashboardPage() {
   const supabase = createServerComponentClient({ cookies });
+  const { data: { user } } = await supabase.auth.getUser();
 
-  // Get current user
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // Fetch projects for this user (RLS uses auth.uid() which matches user.id)
-  const { data: projects, error } = await supabase
+  const { data: projects } = await supabase
     .from("projects")
     .select("id, name, domain, api_key, created_at")
     .eq("user_id", user?.id)
     .order("created_at", { ascending: false });
 
-  // Count events per project (separate query — avoids join issues)
   const projectIds = projects?.map((p) => p.id) ?? [];
+
   const { data: eventCounts } = projectIds.length
     ? await supabase
         .from("events")
@@ -29,110 +23,141 @@ export default async function Dashboard() {
         .in("project_id", projectIds)
     : { data: [] as { project_id: string }[] };
 
-  // Build a map: projectId → event count
   const countMap: Record<string, number> = {};
   for (const row of eventCounts ?? []) {
     countMap[row.project_id] = (countMap[row.project_id] ?? 0) + 1;
   }
 
+  const totalEvents = Object.values(countMap).reduce((a, b) => a + b, 0);
+  const avgEvents =
+    projects?.length ? Math.round(totalEvents / projects.length) : 0;
+
+  const greeting = () => {
+    const h = new Date().getHours();
+    if (h < 12) return "Good morning";
+    if (h < 18) return "Good afternoon";
+    return "Good evening";
+  };
+
   return (
-    <main className="min-h-screen p-8 pb-24">
-      <div className="max-w-4xl mx-auto">
+    <div>
+      {/* Header */}
+      <div className="mb-8">
+        <h1
+          className="text-2xl font-bold text-white mb-1"
+          style={{ fontFamily: "Georgia, serif" }}
+        >
+          {greeting()} 👋
+        </h1>
+        <p className="text-sm text-gray-500">
+          Here&apos;s what&apos;s happening with your social proof widgets.
+        </p>
+      </div>
 
-        {/* Header */}
-        <div className="flex justify-between items-center mb-10">
-          <div>
-            <h1 className="text-3xl font-extrabold">Dashboard</h1>
-            <p className="text-sm text-gray-500 mt-1">
-              Manage your social proof widgets
-            </p>
-          </div>
-          <ButtonAccount />
-        </div>
-
-        {/* Error state */}
-        {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700">
-            <strong>Database error:</strong> {error.message}
-            <p className="mt-1 text-xs text-red-500">
-              Make sure you have run the SQL schema in Supabase. See BUILD_GUIDE.md → Step 1.
-            </p>
-          </div>
-        )}
-
-        {/* Stats row */}
-        {projects && projects.length > 0 && (
-          <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="bg-white border rounded-xl p-4">
-              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Projects</p>
-              <p className="text-2xl font-bold">{projects.length}</p>
-            </div>
-            <div className="bg-white border rounded-xl p-4">
-              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Total Events</p>
-              <p className="text-2xl font-bold">
-                {Object.values(countMap).reduce((a, b) => a + b, 0)}
-              </p>
-            </div>
-            <div className="bg-white border rounded-xl p-4">
-              <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">Active Widgets</p>
-              <p className="text-2xl font-bold">{projects.length}</p>
-            </div>
-          </div>
-        )}
-
-        {/* Projects section */}
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg font-semibold">Your Projects</h2>
-          <Link
-            href="/dashboard/projects/new"
-            className="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        {[
+          {
+            label: "Projects",
+            value: projects?.length ?? 0,
+            sub: "All active",
+            accent: "#10b981",
+          },
+          {
+            label: "Total Events",
+            value: totalEvents.toLocaleString(),
+            sub: "All time",
+            accent: "#a5b4fc",
+          },
+          {
+            label: "Avg / Project",
+            value: avgEvents.toLocaleString(),
+            sub: "Events per project",
+            accent: "#f59e0b",
+          },
+          {
+            label: "Widgets Live",
+            value: projects?.length ?? 0,
+            sub: "Installed & running",
+            accent: "#10b981",
+          },
+        ].map((s) => (
+          <div
+            key={s.label}
+            className="bg-[#13151f] border border-[#1e2130] rounded-2xl p-5"
           >
-            + New Project
+            <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-widest mb-2">
+              {s.label}
+            </p>
+            <p
+              className="text-3xl font-bold text-white mb-1"
+              style={{ fontFamily: "Georgia, serif" }}
+            >
+              {s.value}
+            </p>
+            <p className="text-xs" style={{ color: s.accent }}>
+              {s.sub}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Projects table */}
+      <div className="bg-[#13151f] border border-[#1e2130] rounded-2xl p-6">
+        <div className="flex items-center justify-between mb-5">
+          <h2 className="text-white font-semibold text-[15px]">Projects</h2>
+          <Link
+            href="/dashboard/projects"
+            className="text-indigo-400 text-xs hover:text-indigo-300 transition-colors border border-[#1e2130] px-3 py-1.5 rounded-lg"
+          >
+            View all →
           </Link>
         </div>
 
-        {!projects || projects.length === 0 ? (
-          <div className="text-center py-20 border-2 border-dashed border-gray-200 rounded-2xl">
-            <p className="text-4xl mb-4">🚀</p>
-            <h3 className="text-lg font-semibold mb-2">No projects yet</h3>
-            <p className="text-sm text-gray-500 mb-6">
-              Create your first project to get a widget API key.
-            </p>
+        {!projects?.length ? (
+          <div className="text-center py-12">
+            <p className="text-3xl mb-3">🚀</p>
+            <p className="text-gray-400 text-sm mb-4">No projects yet</p>
             <Link
               href="/dashboard/projects/new"
-              className="bg-blue-600 text-white text-sm px-5 py-2.5 rounded-lg hover:bg-blue-700 transition"
+              className="text-indigo-400 text-sm hover:text-indigo-300 transition-colors"
             >
-              Create your first project
+              Create your first project →
             </Link>
           </div>
         ) : (
-          <div className="grid gap-3">
-            {projects.map((project) => (
+          <div>
+            {projects.map((p, i) => (
               <Link
-                key={project.id}
-                href={`/dashboard/projects/${project.id}`}
-                className="flex items-center justify-between p-5 bg-white rounded-xl border hover:border-blue-300 hover:shadow-sm transition"
+                key={p.id}
+                href={`/dashboard/projects/${p.id}`}
+                className={`flex items-center justify-between py-3 ${
+                  i < projects.length - 1 ? "border-b border-[#1a1d2a]" : ""
+                } hover:opacity-80 transition-opacity`}
               >
-                <div>
-                  <h3 className="font-semibold">{project.name}</h3>
-                  {project.domain && (
-                    <p className="text-sm text-gray-500 mt-0.5">{project.domain}</p>
-                  )}
-                  <p className="text-xs text-gray-400 mt-1 font-mono">
-                    {project.api_key?.slice(0, 20)}…
-                  </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-[#1e2130] flex items-center justify-center text-base">
+                    🌐
+                  </div>
+                  <div>
+                    <p className="text-gray-200 text-sm font-semibold">
+                      {p.name}
+                    </p>
+                    <p className="text-gray-600 text-xs">{p.domain ?? "—"}</p>
+                  </div>
                 </div>
-                <div className="text-right shrink-0 ml-4">
-                  <p className="text-sm font-semibold">
-                    {countMap[project.id] ?? 0}
+                <div className="text-right">
+                  <p className="text-indigo-300 text-sm font-bold">
+                    {(countMap[p.id] ?? 0).toLocaleString()}
                   </p>
-                  <p className="text-xs text-gray-400">events</p>
+                  <p className="text-gray-600 text-xs">events</p>
                 </div>
               </Link>
             ))}
           </div>
         )}
       </div>
-    </main>
+    </div>
   );
-}
+              }
+                                           
