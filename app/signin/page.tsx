@@ -35,7 +35,7 @@ export default function Login() {
       <div className="bg-white p-8 rounded-xl shadow-xl max-w-md w-full text-center border border-gray-100">
         
         <h1 className="text-xl font-bold text-gray-800 mb-6">
-          Create an account or sign in
+          create an account or sign in
         </h1>
 
         <div className="space-y-4">
@@ -55,7 +55,7 @@ export default function Login() {
                 <path fill="#1976D2" d="M43.611 20.083H42V20H24v8h11.303a12.04 12.04 0 0 1-4.087 5.571l.003-.002 6.19 5.238C36.971 39.205 44 34 44 24c0-1.341-.138-2.65-.389-3.917z" />
               </svg>
             )}
-            Sign in with Google
+            signin with google
           </button>
         </div>
 
@@ -72,14 +72,14 @@ export default function Login() {
           </p>
         </div>
 
-        {/* Terms and Conditions Only */}
-        <div className="mt-8 text-[11px] text-gray-400 leading-relaxed">
+        {/* Terms and Conditions with updated links */}
+        <div className="mt-8 text-[11px] text-gray-400 leading-relaxed px-4">
           By proceeding, you agree to the{" "}
-          <Link href="/terms" className="underline hover:text-gray-600">Terms and Conditions</Link>{" "}
-          and <Link href="/privacy" className="underline hover:text-gray-600">Privacy Policy</Link>
+          <Link href="https://ship-lime.vercel.app/tos" className="underline hover:text-gray-600">Terms and Conditions</Link>{" "}
+          and <Link href="https://ship-lime.vercel.app/privacy-policy" className="underline hover:text-gray-600">Privacy Policy</Link>
         </div>
 
       </div>
     </main>
   );
-}
+      }
