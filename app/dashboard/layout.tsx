@@ -3,26 +3,31 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import config from "@/config";
+import DashboardSidebar from "@/components/dashboard/Sidebar";
 
-// This is a server-side component to ensure the user is logged in.
-// If not, it will redirect to the login page.
-// It's applied to all subpages of /dashboard in /app/dashboard/*** pages
-// You can also add custom static UI elements like a Navbar, Sidebar, Footer, etc..
-// See https://shipfa.st/docs/tutorials/private-page
-export default async function LayoutPrivate({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const supabase = createServerComponentClient({ cookies });
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
+  const { data: { session } } = await supabase.auth.getSession();
 
   if (!session) {
     redirect(config.auth.loginUrl);
   }
 
-  return <>{children}</>;
+  // Fetch projects for sidebar list
+  const { data: projects } = await supabase
+    .from("projects")
+    .select("id, name, api_key")
+    .order("created_at", { ascending: false });
+
+  return (
+    <div className="flex min-h-screen bg-[#0f1117]">
+      <DashboardSidebar
+        projects={projects ?? []}
+        userEmail={session.user.email ?? ""}
+      />
+      <main className="flex-1 overflow-y-auto p-8 md:p-10">
+        {children}
+      </main>
+    </div>
+  );
 }
