@@ -3,6 +3,21 @@ import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
+type Event = {
+  id: string;
+  type: string;
+  name: string | null;
+  city: string | null;
+  product: string | null;
+  created_at: string;
+  project_id: string;
+  projects: { name: string } | null;
+};
+
+type Project = {
+  id: string;
+};
+
 const TYPE_CONFIG: Record<string, { icon: string; color: string; bg: string; label: string }> = {
   purchase: { icon: "🛒", color: "#10b981", bg: "#d1fae5", label: "Purchase" },
   signup:   { icon: "👋", color: "#3b82f6", bg: "#dbeafe", label: "Signup" },
@@ -25,18 +40,18 @@ export default async function EventsPage() {
   const { data: projects } = await supabase
     .from("projects")
     .select("id")
-    .eq("user_id", user?.id);
+    .eq("user_id", user?.id) as { data: Project[] | null };
 
   const projectIds = projects?.map((p) => p.id) ?? [];
 
-  const { data: events } = projectIds.length
+  const { data: events } = (projectIds.length
     ? await supabase
         .from("events")
         .select("id, type, name, city, product, created_at, project_id, projects(name)")
         .in("project_id", projectIds)
         .order("created_at", { ascending: false })
         .limit(200)
-    : { data: [] };
+    : { data: [] }) as { data: Event[] | null };
 
   return (
     <div>
@@ -64,7 +79,7 @@ export default async function EventsPage() {
               </tr>
             </thead>
             <tbody>
-              {events.map((event: any, i: number) => {
+              {events.map((event: Event, i: number) => {
                 const tc = TYPE_CONFIG[event.type] ?? TYPE_CONFIG.custom;
                 return (
                   <tr key={event.id} className={`${i < events.length - 1 ? "border-b border-[#1a1d2a]" : ""} hover:bg-[#1a1d2a] transition-colors`}>
@@ -88,5 +103,4 @@ export default async function EventsPage() {
       )}
     </div>
   );
-          }
-                        
+                    }
