@@ -27,64 +27,133 @@ export default async function ProjectsPage() {
     countMap[row.project_id] = (countMap[row.project_id] ?? 0) + 1;
   }
 
+  const totalEvents = Object.values(countMap).reduce((a, b) => a + b, 0);
+
   return (
     <div>
-      <div className="flex items-start justify-between mb-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "Georgia, serif" }}>
+          <h1 className="font-bold text-[22px]" style={{ color: "#1a1d2e" }}>
             Projects
           </h1>
-          <p className="text-sm text-gray-500">Each project is one website with a widget installed.</p>
+          <p className="text-sm mt-0.5" style={{ color: "#9ca3af" }}>
+            Each project is one website with a widget installed.
+          </p>
         </div>
         <Link
           href="/dashboard/projects/new"
-          className="text-sm font-semibold text-white px-4 py-2.5 rounded-xl transition-opacity hover:opacity-90"
-          style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)" }}
+          className="flex items-center gap-2 text-sm font-semibold text-white px-4 py-2.5 rounded-xl transition-opacity hover:opacity-90"
+          style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}
         >
-          + New Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+          New Project
         </Link>
       </div>
 
       {!projects?.length ? (
-        <div className="text-center py-20 border-2 border-dashed border-[#1e2130] rounded-2xl">
+        <div
+          className="text-center py-20 rounded-2xl"
+          style={{ border: "2px dashed #e5e7eb", background: "#fff" }}
+        >
           <p className="text-4xl mb-4">🚀</p>
-          <h2 className="text-white font-semibold text-lg mb-2">No projects yet</h2>
-          <p className="text-gray-500 text-sm mb-6">Create your first project to get your widget API key.</p>
+          <h2 className="font-semibold text-lg mb-2" style={{ color: "#1a1d2e" }}>No projects yet</h2>
+          <p className="text-sm mb-6" style={{ color: "#9ca3af" }}>
+            Create your first project to get your widget API key.
+          </p>
           <Link
             href="/dashboard/projects/new"
             className="text-sm font-semibold text-white px-5 py-2.5 rounded-xl transition-opacity hover:opacity-90"
-            style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)" }}
+            style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}
           >
             Create your first project
           </Link>
         </div>
       ) : (
-        <div className="grid gap-3">
-          {projects.map((p) => (
+        <div className="space-y-3">
+          {/* Table header */}
+          <div
+            className="grid grid-cols-12 gap-4 px-6 py-3 rounded-xl"
+            style={{ background: "#fff", borderBottom: "1px solid #f0f1f3" }}
+          >
+            {[
+              { label: "#", span: "col-span-1" },
+              { label: "Name", span: "col-span-3" },
+              { label: "Domain", span: "col-span-3" },
+              { label: "API Key", span: "col-span-3" },
+              { label: "Events", span: "col-span-1" },
+              { label: "Status", span: "col-span-1" },
+            ].map((h) => (
+              <p
+                key={h.label}
+                className={`text-[10px] font-semibold uppercase tracking-wider ${h.span}`}
+                style={{ color: "#b0b7c3" }}
+              >
+                {h.label}
+              </p>
+            ))}
+          </div>
+
+          {projects.map((p, i) => (
             <Link
               key={p.id}
               href={`/dashboard/projects/${p.id}`}
-              className="flex items-center justify-between p-5 bg-[#13151f] border border-[#1e2130] rounded-2xl hover:border-indigo-500/40 transition-all group"
+              className="grid grid-cols-12 gap-4 items-center px-6 py-4 rounded-2xl transition-all hover:shadow-md group"
+              style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}
             >
-              <div className="flex items-center gap-4">
-                <div className="w-11 h-11 rounded-xl bg-[#1e2130] flex items-center justify-center text-xl">🌐</div>
-                <div>
-                  <p className="text-gray-100 font-semibold text-[15px] mb-0.5">{p.name}</p>
-                  {p.domain && <p className="text-gray-500 text-xs mb-1.5">{p.domain}</p>}
-                  <code className="text-[10px] font-mono text-indigo-400 bg-[#0f1117] px-2 py-0.5 rounded">
-                    {p.api_key?.slice(0, 22)}…
-                  </code>
+              <span className="col-span-1 text-sm font-bold" style={{ color: "#d1d5db" }}>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+
+              <div className="col-span-3 flex items-center gap-3">
+                <div
+                  className="w-9 h-9 rounded-xl flex items-center justify-center text-base shrink-0"
+                  style={{ background: "#f3f4f6" }}
+                >
+                  🌐
+                </div>
+                <p className="text-sm font-semibold truncate" style={{ color: "#1a1d2e" }}>{p.name}</p>
+              </div>
+
+              <p className="col-span-3 text-sm truncate" style={{ color: "#6b7280" }}>
+                {p.domain ?? "—"}
+              </p>
+
+              <div className="col-span-3">
+                <code
+                  className="text-[11px] font-mono px-2 py-0.5 rounded-lg"
+                  style={{ background: "#f3f4f6", color: "#4f6ef7" }}
+                >
+                  {p.api_key?.slice(0, 20)}…
+                </code>
+              </div>
+
+              <div className="col-span-1">
+                <p className="text-sm font-bold" style={{ color: "#4f6ef7" }}>
+                  {(countMap[p.id] ?? 0).toLocaleString()}
+                </p>
+                <div className="h-1 rounded-full mt-1" style={{ background: "#e0e7ff" }}>
+                  <div
+                    className="h-1 rounded-full"
+                    style={{
+                      background: "#4f6ef7",
+                      width: totalEvents > 0
+                        ? `${Math.min(100, Math.round(((countMap[p.id] ?? 0) / totalEvents) * 100))}%`
+                        : "0%",
+                    }}
+                  />
                 </div>
               </div>
-              <div className="flex items-center gap-6 shrink-0">
-                <div className="text-right">
-                  <p className="text-indigo-300 font-bold text-lg">{(countMap[p.id] ?? 0).toLocaleString()}</p>
-                  <p className="text-gray-600 text-[10px]">events</p>
-                </div>
-                <div className="text-[10px] font-semibold text-emerald-400 bg-emerald-900/20 border border-emerald-900/40 px-2.5 py-1 rounded-full">
+
+              <div className="col-span-1">
+                <span
+                  className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                  style={{ background: "#d1fae5", color: "#10b981" }}
+                >
                   ● Active
-                </div>
-                <span className="text-gray-600 text-lg group-hover:text-gray-400 transition-colors">›</span>
+                </span>
               </div>
             </Link>
           ))}
@@ -92,4 +161,5 @@ export default async function ProjectsPage() {
       )}
     </div>
   );
-}
+                }
+                  
