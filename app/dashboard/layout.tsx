@@ -13,19 +13,18 @@ export default async function DashboardLayout({ children }: { children: ReactNod
     redirect(config.auth.loginUrl);
   }
 
-  // Fetch projects for sidebar list
   const { data: projects } = await supabase
     .from("projects")
     .select("id, name, api_key")
     .order("created_at", { ascending: false });
 
   return (
-    <div className="flex min-h-screen bg-[#F2F3F4]">
+    <div className="flex min-h-screen" style={{ background: "#f4f6fb", fontFamily: "'DM Sans', sans-serif" }}>
       <DashboardSidebar
         projects={projects ?? []}
         userEmail={session.user.email ?? ""}
       />
-      <main className="flex-1 overflow-y-auto p-8 md:p-10">
+      <main className="flex-1 overflow-y-auto p-8">
         {children}
       </main>
     </div>
