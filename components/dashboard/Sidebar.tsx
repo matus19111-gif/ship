@@ -33,7 +33,7 @@ export default function DashboardSidebar({
   const initials = userEmail?.slice(0, 2).toUpperCase() ?? "??";
 
   return (
-    <aside className="w-[240px] min-h-screen flex flex-col shrink-0 border-r border-[#1e2130] bg-[#0f1117]">
+    <aside className="w-[240px] min-h-screen flex flex-col shrink-0 border-r border-[#1e2130] bg-[#2563EB]">
       {/* Logo */}
       <div className="px-5 py-6 border-b border-[#1e2130]">
         <div className="flex items-center gap-3">
