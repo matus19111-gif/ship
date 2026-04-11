@@ -14,13 +14,11 @@ type Event = {
   projects: { name: string } | null;
 };
 
-type Project = {
-  id: string;
-};
+type Project = { id: string };
 
 const TYPE_CONFIG: Record<string, { icon: string; color: string; bg: string; label: string }> = {
   purchase: { icon: "🛒", color: "#10b981", bg: "#d1fae5", label: "Purchase" },
-  signup:   { icon: "👋", color: "#3b82f6", bg: "#dbeafe", label: "Signup" },
+  signup:   { icon: "👋", color: "#4f6ef7", bg: "#e0e7ff", label: "Signup" },
   pageview: { icon: "👀", color: "#8b5cf6", bg: "#ede9fe", label: "Pageview" },
   custom:   { icon: "⚡", color: "#f59e0b", bg: "#fef3c7", label: "Custom" },
 };
@@ -55,52 +53,97 @@ export default async function EventsPage() {
 
   return (
     <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "Georgia, serif" }}>
-          Live Events
-        </h1>
-        <p className="text-sm text-gray-500">All events across your projects, newest first.</p>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="font-bold text-[22px]" style={{ color: "#1a1d2e" }}>
+            Live Events
+          </h1>
+          <p className="text-sm mt-0.5" style={{ color: "#9ca3af" }}>
+            All events across your projects, newest first.
+          </p>
+        </div>
+        {events?.length ? (
+          <div
+            className="flex items-center gap-2 text-xs font-semibold px-3 py-1.5 rounded-full"
+            style={{ background: "#d1fae5", color: "#10b981" }}
+          >
+            <span className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: "#10b981" }} />
+            {events.length} events
+          </div>
+        ) : null}
       </div>
 
       {!events?.length ? (
-        <div className="text-center py-20 border-2 border-dashed border-[#1e2130] rounded-2xl">
+        <div
+          className="text-center py-20 rounded-2xl"
+          style={{ border: "2px dashed #e5e7eb", background: "#fff" }}
+        >
           <p className="text-4xl mb-4">📭</p>
-          <h2 className="text-white font-semibold text-lg mb-2">No events yet</h2>
-          <p className="text-gray-500 text-sm">Events will appear here once your widget is installed and receiving data.</p>
+          <h2 className="font-semibold text-lg mb-2" style={{ color: "#1a1d2e" }}>No events yet</h2>
+          <p className="text-sm" style={{ color: "#9ca3af" }}>
+            Events will appear here once your widget is installed and receiving data.
+          </p>
         </div>
       ) : (
-        <div className="bg-[#13151f] border border-[#1e2130] rounded-2xl overflow-hidden">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b border-[#1e2130]">
-                {["Type", "Name", "City", "Product", "Project", "Time"].map((h) => (
-                  <th key={h} className="text-left text-[10px] font-semibold text-gray-600 uppercase tracking-widest px-4 py-3">{h}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {events.map((event: Event, i: number) => {
-                const tc = TYPE_CONFIG[event.type] ?? TYPE_CONFIG.custom;
-                return (
-                  <tr key={event.id} className={`${i < events.length - 1 ? "border-b border-[#1a1d2a]" : ""} hover:bg-[#1a1d2a] transition-colors`}>
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full"
-                        style={{ background: tc.bg + "22", color: tc.color, border: `1px solid ${tc.color}33` }}>
-                        {tc.icon} {tc.label}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-gray-300 text-sm">{event.name ?? <span className="text-gray-700">—</span>}</td>
-                    <td className="px-4 py-3 text-gray-400 text-sm">{event.city ?? <span className="text-gray-700">—</span>}</td>
-                    <td className="px-4 py-3 text-gray-400 text-sm">{event.product ?? <span className="text-gray-700">—</span>}</td>
-                    <td className="px-4 py-3 text-gray-600 text-xs">{event.projects?.name ?? "—"}</td>
-                    <td className="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">{timeAgo(event.created_at)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
+          {/* Table header */}
+          <div className="grid grid-cols-12 gap-2 px-6 py-3" style={{ borderBottom: "1px solid #f3f4f6" }}>
+            {[
+              { label: "Type", span: "col-span-2" },
+              { label: "Name", span: "col-span-2" },
+              { label: "City", span: "col-span-2" },
+              { label: "Product", span: "col-span-3" },
+              { label: "Project", span: "col-span-2" },
+              { label: "Time", span: "col-span-1" },
+            ].map((h) => (
+              <p
+                key={h.label}
+                className={`text-[10px] font-semibold uppercase tracking-wider ${h.span}`}
+                style={{ color: "#b0b7c3" }}
+              >
+                {h.label}
+              </p>
+            ))}
+          </div>
+
+          <div className="divide-y" style={{ borderColor: "#f9fafb" }}>
+            {events.map((event: Event) => {
+              const tc = TYPE_CONFIG[event.type] ?? TYPE_CONFIG.custom;
+              return (
+                <div
+                  key={event.id}
+                  className="grid grid-cols-12 gap-2 items-center px-6 py-3.5 hover:bg-gray-50 transition-colors"
+                >
+                  <div className="col-span-2">
+                    <span
+                      className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full"
+                      style={{ background: tc.bg, color: tc.color }}
+                    >
+                      {tc.icon} {tc.label}
+                    </span>
+                  </div>
+                  <p className="col-span-2 text-sm font-medium truncate" style={{ color: "#374151" }}>
+                    {event.name ?? <span style={{ color: "#d1d5db" }}>—</span>}
+                  </p>
+                  <p className="col-span-2 text-sm truncate" style={{ color: "#6b7280" }}>
+                    {event.city ?? <span style={{ color: "#d1d5db" }}>—</span>}
+                  </p>
+                  <p className="col-span-3 text-sm truncate" style={{ color: "#6b7280" }}>
+                    {event.product ?? <span style={{ color: "#d1d5db" }}>—</span>}
+                  </p>
+                  <p className="col-span-2 text-xs truncate" style={{ color: "#9ca3af" }}>
+                    {event.projects?.name ?? "—"}
+                  </p>
+                  <p className="col-span-1 text-xs whitespace-nowrap" style={{ color: "#9ca3af" }}>
+                    {timeAgo(event.created_at)}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       )}
     </div>
   );
-                    }
+                      }
