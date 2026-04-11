@@ -24,38 +24,76 @@ export default function DashboardSidebar({
   }
 
   const navItems = [
-    { href: "/dashboard", icon: "▦", label: "Overview" },
-    { href: "/dashboard/projects", icon: "◈", label: "Projects" },
-    { href: "/dashboard/events", icon: "◎", label: "Live Events" },
-    { href: "/dashboard/install", icon: "↗", label: "Install Guide" },
+    {
+      href: "/dashboard",
+      label: "Overview",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+          <rect x="14" y="14" width="7" height="7" /><rect x="3" y="14" width="7" height="7" />
+        </svg>
+      ),
+    },
+    {
+      href: "/dashboard/projects",
+      label: "Projects",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+      ),
+    },
+    {
+      href: "/dashboard/events",
+      label: "Live Events",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" />
+        </svg>
+      ),
+    },
+    {
+      href: "/dashboard/install",
+      label: "Install Guide",
+      icon: (
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />
+        </svg>
+      ),
+    },
   ];
 
   const initials = userEmail?.slice(0, 2).toUpperCase() ?? "??";
 
   return (
-    <aside className="w-[240px] min-h-screen flex flex-col shrink-0 border-r border-[#1e2130] bg-[#2563EB]">
+    <aside
+      className="w-[240px] min-h-screen flex flex-col shrink-0"
+      style={{
+        background: "#ffffff",
+        borderRight: "1px solid #f0f1f3",
+        fontFamily: "'DM Sans', sans-serif",
+      }}
+    >
       {/* Logo */}
-      <div className="px-5 py-6 border-b border-[#1e2130]">
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center text-base shrink-0"
-            style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)" }}
-          >
-            📢
-          </div>
-          <div>
-            <p className="text-white font-bold text-sm leading-none" style={{ fontFamily: "Georgia, serif" }}>
-              ProofPop
-            </p>
-            <p className="text-[10px] text-gray-600 font-mono mt-0.5">Social Proof</p>
-          </div>
+      <div className="px-6 py-5 flex items-center gap-3" style={{ borderBottom: "1px solid #f0f1f3" }}>
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+          style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+          </svg>
+        </div>
+        <div>
+          <p className="font-bold text-[15px] leading-none" style={{ color: "#1a1d2e" }}>ProofPop</p>
+          <p className="text-[10px] mt-0.5" style={{ color: "#9ca3af" }}>Social Proof</p>
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-4">
-        <p className="text-[10px] text-gray-600 font-semibold tracking-widest uppercase px-2 mb-2">
-          Menu
+      <nav className="flex-1 px-3 py-5">
+        <p className="text-[10px] font-semibold uppercase tracking-widest px-3 mb-3" style={{ color: "#b0b7c3" }}>
+          Main Menu
         </p>
         {navItems.map((item) => {
           const active =
@@ -66,68 +104,89 @@ export default function DashboardSidebar({
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] mb-0.5 transition-all ${
-                active
-                  ? "bg-[#1e2130] text-indigo-300 font-semibold"
-                  : "text-gray-500 hover:text-gray-300 hover:bg-[#1a1d2a]"
-              }`}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] mb-0.5 transition-all font-medium"
+              style={{
+                background: active ? "#4f6ef7" : "transparent",
+                color: active ? "#ffffff" : "#6b7280",
+              }}
             >
-              <span className="text-sm opacity-80">{item.icon}</span>
+              <span style={{ opacity: active ? 1 : 0.7 }}>{item.icon}</span>
               {item.label}
             </Link>
           );
         })}
 
-        {/* Projects list */}
-        <div className="mt-6">
-          <div className="flex items-center justify-between px-2 mb-2">
-            <p className="text-[10px] text-gray-600 font-semibold tracking-widest uppercase">
-              Projects
-            </p>
-            <Link
-              href="/dashboard/projects/new"
-              className="w-5 h-5 flex items-center justify-center rounded bg-[#1e2130] text-indigo-400 text-base leading-none hover:bg-[#2d3047] transition-colors"
-            >
-              +
-            </Link>
-          </div>
-          {projects.length === 0 && (
-            <p className="text-xs text-gray-600 px-2">No projects yet</p>
-          )}
-          {projects.map((p) => {
-            const active = pathname === `/dashboard/projects/${p.id}`;
-            return (
+        {/* Projects sub-list */}
+        {projects.length > 0 && (
+          <div className="mt-6">
+            <div className="flex items-center justify-between px-3 mb-2">
+              <p className="text-[10px] font-semibold uppercase tracking-widest" style={{ color: "#b0b7c3" }}>
+                Projects
+              </p>
               <Link
-                key={p.id}
-                href={`/dashboard/projects/${p.id}`}
-                className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-[12px] mb-0.5 transition-all truncate ${
-                  active
-                    ? "bg-[#1e2130] text-gray-200"
-                    : "text-gray-500 hover:text-gray-300 hover:bg-[#1a1d2a]"
-                }`}
+                href="/dashboard/projects/new"
+                className="w-5 h-5 flex items-center justify-center rounded-md text-sm font-bold transition-colors"
+                style={{ background: "#f3f4f6", color: "#4f6ef7" }}
               >
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="truncate">{p.name}</span>
+                +
               </Link>
-            );
-          })}
-        </div>
+            </div>
+            {projects.map((p) => {
+              const active = pathname === `/dashboard/projects/${p.id}`;
+              return (
+                <Link
+                  key={p.id}
+                  href={`/dashboard/projects/${p.id}`}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-[12px] mb-0.5 transition-all truncate font-medium"
+                  style={{
+                    background: active ? "#eef0fd" : "transparent",
+                    color: active ? "#4f6ef7" : "#9ca3af",
+                  }}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#10b981" }} />
+                  <span className="truncate">{p.name}</span>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </nav>
 
+      {/* Upgrade Banner */}
+      <div className="mx-3 mb-4 rounded-2xl p-4 text-center" style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}>
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center mx-auto mb-2"
+          style={{ background: "rgba(255,255,255,0.2)" }}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+        </div>
+        <p className="text-white font-bold text-sm mb-0.5">ProofPop Pro</p>
+        <p className="text-[10px] mb-3" style={{ color: "rgba(255,255,255,0.7)" }}>Unlock all features</p>
+        <button
+          className="w-full py-1.5 rounded-lg text-[12px] font-bold transition-opacity hover:opacity-90"
+          style={{ background: "#fff", color: "#4f6ef7" }}
+        >
+          Get Pro
+        </button>
+      </div>
+
       {/* User */}
-      <div className="px-5 py-4 border-t border-[#1e2130]">
+      <div className="px-5 py-4" style={{ borderTop: "1px solid #f0f1f3" }}>
         <div className="flex items-center gap-3">
           <div
             className="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold shrink-0"
-            style={{ background: "linear-gradient(135deg,#6366f1,#ec4899)" }}
+            style={{ background: "linear-gradient(135deg, #4f6ef7, #ec4899)" }}
           >
             {initials}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-gray-300 text-xs font-semibold truncate">{userEmail}</p>
+            <p className="text-xs font-semibold truncate" style={{ color: "#374151" }}>{userEmail}</p>
             <button
               onClick={handleSignOut}
-              className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors"
+              className="text-[10px] transition-colors hover:underline"
+              style={{ color: "#9ca3af" }}
             >
               Sign out
             </button>
@@ -136,5 +195,4 @@ export default function DashboardSidebar({
       </div>
     </aside>
   );
-        }
-            
+}
