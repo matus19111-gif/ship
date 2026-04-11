@@ -36,7 +36,7 @@ export default function NewProjectPage() {
         ← Back to projects
       </Link>
       <h1 className="text-2xl font-bold text-white mb-1" style={{ fontFamily: "Georgia, serif" }}>New Project</h1>
-      <p className="text-sm text-gray-500 mb-8">A project = one website. You'll get an API key to install the widget.</p>
+      <p className="text-sm text-gray-500 mb-8">A project = one website. You&apos;ll get an API key to install the widget.</p>
 
       <div className="bg-[#13151f] border border-[#1e2130] rounded-2xl p-6 space-y-5">
         <div>
