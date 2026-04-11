@@ -30,8 +30,7 @@ export default async function DashboardPage() {
   }
 
   const totalEvents = Object.values(countMap).reduce((a, b) => a + b, 0);
-  const avgEvents =
-    projects?.length ? Math.round(totalEvents / projects.length) : 0;
+  const avgEvents = projects?.length ? Math.round(totalEvents / projects.length) : 0;
 
   const greeting = () => {
     const h = new Date().getHours();
@@ -40,127 +39,275 @@ export default async function DashboardPage() {
     return "Good evening";
   };
 
+  const stats = [
+    {
+      label: "Total Projects",
+      value: projects?.length ?? 0,
+      sub: "+5% from yesterday",
+      accent: "#10b981",
+      bg: "#d1fae5",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+        </svg>
+      ),
+    },
+    {
+      label: "Total Events",
+      value: totalEvents.toLocaleString(),
+      sub: "All time",
+      accent: "#4f6ef7",
+      bg: "#e0e7ff",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+        </svg>
+      ),
+    },
+    {
+      label: "Avg / Project",
+      value: avgEvents.toLocaleString(),
+      sub: "Events per project",
+      accent: "#f59e0b",
+      bg: "#fef3c7",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" />
+          <line x1="6" y1="20" x2="6" y2="14" />
+        </svg>
+      ),
+    },
+    {
+      label: "Widgets Live",
+      value: projects?.length ?? 0,
+      sub: "Installed & running",
+      accent: "#8b5cf6",
+      bg: "#ede9fe",
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="10" /><polyline points="12 8 12 12 14 14" />
+        </svg>
+      ),
+    },
+  ];
+
   return (
     <div>
-      {/* Header with Account Button */}
-      <div className="flex justify-between items-start mb-8">
+      {/* Top bar */}
+      <div className="flex justify-between items-center mb-8">
         <div>
-          <h1
-            className="text-2xl font-bold text-white mb-1"
-            style={{ fontFamily: "Georgia, serif" }}
-          >
+          <h1 className="font-bold text-[22px] leading-tight" style={{ color: "#1a1d2e", fontFamily: "'DM Sans', sans-serif" }}>
             {greeting()} 👋
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm mt-0.5" style={{ color: "#9ca3af" }}>
             Here&apos;s what&apos;s happening with your social proof widgets.
           </p>
         </div>
-        <ButtonAccount />
+        <div className="flex items-center gap-3">
+          <button
+            className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl border transition-colors"
+            style={{ borderColor: "#e5e7eb", color: "#6b7280", background: "#fff" }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export
+          </button>
+          <ButtonAccount />
+        </div>
       </div>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        {[
-          {
-            label: "Projects",
-            value: projects?.length ?? 0,
-            sub: "All active",
-            accent: "#10b981",
-          },
-          {
-            label: "Total Events",
-            value: totalEvents.toLocaleString(),
-            sub: "All time",
-            accent: "#a5b4fc",
-          },
-          {
-            label: "Avg / Project",
-            value: avgEvents.toLocaleString(),
-            sub: "Events per project",
-            accent: "#f59e0b",
-          },
-          {
-            label: "Widgets Live",
-            value: projects?.length ?? 0,
-            sub: "Installed & running",
-            accent: "#10b981",
-          },
-        ].map((s) => (
+      {/* Stat Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {stats.map((s) => (
           <div
             key={s.label}
-            className="bg-[#13151f] border border-[#1e2130] rounded-2xl p-5"
+            className="rounded-2xl p-5"
+            style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
           >
-            <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-widest mb-2">
-              {s.label}
-            </p>
-            <p
-              className="text-3xl font-bold text-white mb-1"
-              style={{ fontFamily: "Georgia, serif" }}
-            >
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: "#9ca3af" }}>
+                {s.label}
+              </p>
+              <div className="w-9 h-9 rounded-xl flex items-center justify-center" style={{ background: s.bg }}>
+                {s.icon}
+              </div>
+            </div>
+            <p className="text-3xl font-bold mb-1" style={{ color: "#1a1d2e" }}>
               {s.value}
             </p>
-            <p className="text-xs" style={{ color: s.accent }}>
-              {s.sub}
+            <p className="text-xs font-medium" style={{ color: s.accent }}>
+              ↑ {s.sub}
             </p>
           </div>
         ))}
       </div>
 
-      {/* Projects table */}
-      <div className="bg-[#F2F3F4] border border-[#1e2130] rounded-2xl p-6">
-        <div className="flex items-center justify-between mb-5">
-          <h2 className="text-white font-semibold text-[15px]">Projects</h2>
-          <Link
-            href="/dashboard/projects"
-            className="text-indigo-400 text-xs hover:text-indigo-300 transition-colors border border-[#1e2130] px-3 py-1.5 rounded-lg"
-          >
-            View all →
-          </Link>
-        </div>
-
-        {!projects?.length ? (
-          <div className="text-center py-12">
-            <p className="text-3xl mb-3">🚀</p>
-            <p className="text-gray-400 text-sm mb-4">No projects yet</p>
+      {/* Projects table + Quick actions */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* Projects Table */}
+        <div
+          className="lg:col-span-2 rounded-2xl p-6"
+          style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+        >
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h2 className="font-semibold text-[15px]" style={{ color: "#1a1d2e" }}>Projects</h2>
+              <p className="text-xs mt-0.5" style={{ color: "#9ca3af" }}>All your active projects</p>
+            </div>
             <Link
-              href="/dashboard/projects/new"
-              className="text-indigo-400 text-sm hover:text-indigo-300 transition-colors"
+              href="/dashboard/projects"
+              className="text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors"
+              style={{ background: "#f3f4f6", color: "#4f6ef7" }}
             >
-              Create your first project →
+              View all →
             </Link>
           </div>
-        ) : (
-          <div>
-            {projects.map((p, i) => (
-              <Link
-                key={p.id}
-                href={`/dashboard/projects/${p.id}`}
-                className={`flex items-center justify-between py-3 ${
-                  i < projects.length - 1 ? "border-b border-[#1a1d2a]" : ""
-                } hover:opacity-80 transition-opacity`}
+
+          {/* Table header */}
+          <div className="grid grid-cols-12 gap-2 px-3 mb-2">
+            {["#", "Project", "Domain", "Events", "Status"].map((h) => (
+              <p
+                key={h}
+                className={`text-[10px] font-semibold uppercase tracking-wider ${h === "#" ? "col-span-1" : h === "Project" ? "col-span-4" : h === "Domain" ? "col-span-3" : h === "Events" ? "col-span-2" : "col-span-2"}`}
+                style={{ color: "#b0b7c3" }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-[#1e2130] flex items-center justify-center text-base">
-                    🌐
-                  </div>
-                  <div>
-                    <p className="text-gray-200 text-sm font-semibold">
-                      {p.name}
-                    </p>
-                    <p className="text-gray-600 text-xs">{p.domain ?? "—"}</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="text-indigo-300 text-sm font-bold">
-                    {(countMap[p.id] ?? 0).toLocaleString()}
-                  </p>
-                  <p className="text-gray-600 text-xs">events</p>
-                </div>
-              </Link>
+                {h}
+              </p>
             ))}
           </div>
-        )}
+
+          {!projects?.length ? (
+            <div className="text-center py-14">
+              <p className="text-3xl mb-3">🚀</p>
+              <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>No projects yet</p>
+              <Link
+                href="/dashboard/projects/new"
+                className="text-sm font-semibold transition-colors"
+                style={{ color: "#4f6ef7" }}
+              >
+                Create your first project →
+              </Link>
+            </div>
+          ) : (
+            <div className="space-y-1">
+              {projects.map((p, i) => (
+                <Link
+                  key={p.id}
+                  href={`/dashboard/projects/${p.id}`}
+                  className="grid grid-cols-12 gap-2 items-center px-3 py-3 rounded-xl transition-all hover:bg-gray-50"
+                >
+                  <span className="col-span-1 text-xs font-bold" style={{ color: "#b0b7c3" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div className="col-span-4 flex items-center gap-2.5">
+                    <div
+                      className="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0"
+                      style={{ background: "#f3f4f6" }}
+                    >
+                      🌐
+                    </div>
+                    <p className="text-sm font-semibold truncate" style={{ color: "#1a1d2e" }}>{p.name}</p>
+                  </div>
+                  <p className="col-span-3 text-xs truncate" style={{ color: "#9ca3af" }}>{p.domain ?? "—"}</p>
+                  <div className="col-span-2">
+                    <div className="flex items-center gap-1.5">
+                      <p className="text-sm font-bold" style={{ color: "#4f6ef7" }}>
+                        {(countMap[p.id] ?? 0).toLocaleString()}
+                      </p>
+                    </div>
+                    <div
+                      className="h-1 rounded-full mt-1"
+                      style={{
+                        background: "#e0e7ff",
+                        width: "100%",
+                      }}
+                    >
+                      <div
+                        className="h-1 rounded-full"
+                        style={{
+                          background: "#4f6ef7",
+                          width: totalEvents > 0 ? `${Math.round(((countMap[p.id] ?? 0) / totalEvents) * 100)}%` : "0%",
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-span-2">
+                    <span
+                      className="text-[10px] font-semibold px-2 py-0.5 rounded-full"
+                      style={{ background: "#d1fae5", color: "#10b981" }}
+                    >
+                      ● Active
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Quick Actions */}
+        <div className="space-y-4">
+          {/* Quick stats card */}
+          <div
+            className="rounded-2xl p-5"
+            style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)", boxShadow: "0 4px 20px rgba(79,110,247,0.3)" }}
+          >
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">Total Events</p>
+            <p className="text-white text-4xl font-bold mb-1">{totalEvents.toLocaleString()}</p>
+            <p className="text-white/60 text-xs">All time across all projects</p>
+            <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}>
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-white/60 text-[10px]">Projects</p>
+                  <p className="text-white font-bold text-lg">{projects?.length ?? 0}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-[10px]">Avg / Project</p>
+                  <p className="text-white font-bold text-lg">{avgEvents}</p>
+                </div>
+                <div>
+                  <p className="text-white/60 text-[10px]">Live</p>
+                  <p className="text-white font-bold text-lg">{projects?.length ?? 0}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick links */}
+          <div
+            className="rounded-2xl p-5"
+            style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+          >
+            <p className="font-semibold text-sm mb-4" style={{ color: "#1a1d2e" }}>Quick Actions</p>
+            <div className="space-y-2">
+              {[
+                { label: "New Project", href: "/dashboard/projects/new", icon: "➕", color: "#4f6ef7", bg: "#e0e7ff" },
+                { label: "View Live Events", href: "/dashboard/events", icon: "⚡", color: "#f59e0b", bg: "#fef3c7" },
+                { label: "Install Guide", href: "/dashboard/install", icon: "📖", color: "#10b981", bg: "#d1fae5" },
+              ].map((action) => (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="flex items-center gap-3 p-3 rounded-xl transition-all hover:bg-gray-50"
+                >
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0"
+                    style={{ background: action.bg }}
+                  >
+                    {action.icon}
+                  </div>
+                  <p className="text-sm font-medium" style={{ color: "#374151" }}>{action.label}</p>
+                  <svg className="ml-auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="9 18 15 12 9 6" />
+                  </svg>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
-            }
+      }
+                    
