@@ -51,7 +51,6 @@ export default function ProjectDetailPage() {
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<"events" | "settings" | "install">("events");
   const [settings, setSettings] = useState<Settings | null>(null);
   const [saving, setSaving] = useState(false);
@@ -60,19 +59,10 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     fetch(`/api/projects/${id}`)
-      .then((r) => {
-        if (!r.ok) throw new Error("Failed to fetch project");
-        return r.json();
-      })
+      .then((r) => r.json())
       .then((d) => {
-        if (!d.project) throw new Error("Project not found");
         setProject(d.project);
         setSettings(d.project?.campaigns?.[0]?.settings ?? null);
-        setError(null);
-      })
-      .catch((err) => {
-        setError(err.message);
-        setProject(null);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -80,32 +70,20 @@ export default function ProjectDetailPage() {
   async function saveSettings() {
     if (!settings) return;
     setSaving(true);
-    try {
-      const res = await fetch(`/api/projects/${id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings }),
-      });
-      if (!res.ok) throw new Error("Failed to save settings");
-      setSaved(true);
-      setTimeout(() => setSaved(false), 2000);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSaving(false);
-    }
+    await fetch(`/api/projects/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ settings }),
+    });
+    setSaving(false);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
   }
 
   async function deleteProject() {
     if (!confirm("Delete this project? All events will be lost.")) return;
-    try {
-      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
-      if (!res.ok) throw new Error("Failed to delete project");
-      router.push("/dashboard/projects");
-    } catch (err) {
-      console.error(err);
-      alert("Failed to delete project");
-    }
+    await fetch(`/api/projects/${id}`, { method: "DELETE" });
+    router.push("/dashboard/projects");
   }
 
   function copyText(text: string, key: string) {
@@ -125,12 +103,10 @@ export default function ProjectDetailPage() {
     );
   }
 
-  if (error || !project) {
+  if (!project) {
     return (
       <div className="text-center py-20">
-        <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>
-          {error || "Project not found."}
-        </p>
+        <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>Project not found.</p>
         <Link
           href="/dashboard/projects"
           className="text-sm font-semibold"
@@ -142,8 +118,8 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "";
-  const scriptTag = `<script src="${origin}/widget.js" data-api-key="${project.api_key}"></script>`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "https://yourdomain.com";
+  const scriptTag = `<script src="${origin}/widget.js" data-api-key="${project.api_key}">` + `</script>`;
   const curlCmd = [
     `curl -X POST ${origin}/api/event \\`,
     `  -H "Content-Type: application/json" \\`,
@@ -479,94 +455,53 @@ export default function ProjectDetailPage() {
       )}
 
       {/* ── INSTALL TAB ── */}
-{tab === "install" && (
-  <div className="max-w-2xl space-y-4">
-    {[
-      {
-        step: "1",
-        title: "Add the script to your website",
-        desc: "Paste before the closing </body> tag on every page.",
-        code: scriptTag,
-        key: "script",
-        color: "#4f6ef7",
-        bg: "#e0e7ff",
-      },
-      {
-        step: "2",
-        title: "Send events from your server",
-        desc: "Call this from your backend whenever a purchase or signup happens.",
-        code: `fetch('${origin}/api/event', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    apiKey: '${project.api_key}',\n    type: 'purchase',\n    name: 'Ahmed',\n    city: 'Dhaka',\n    product: 'Running Shoes'\n  })\n})`,
-        key: "fetch",
-        color: "#10b981",
-        bg: "#d1fae5",
-      },
-      {
-        step: "3",
-        title: "Test with curl",
-        desc: "Run this in your terminal to send a test event.",
-        code: curlCmd,
-        key: "curl",
-        color: "#f59e0b",
-        bg: "#fef3c7",
-      },
-    ].map(({ step, title, desc, code, key, color, bg }) => (
-      <div
-        key={step}
-        className="rounded-2xl p-5"
-        style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
-      >
-        <div className="flex items-center gap-3 mb-2">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
-            style={{ background: bg, color }}
-          >
-            {step}
-          </div>
-          <p className="font-semibold text-sm" style={{ color: "#1a1d2e" }}>{title}</p>
-          <button
-            onClick={() => copyText(code, key)}
-            className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition-all"
-            style={{
-              background: copied === key ? "#d1fae5" : "#f3f4f6",
-              color: copied === key ? "#10b981" : "#6b7280",
-            }}
-          >
-            {copied === key ? "✓ Copied" : "Copy"}
-          </button>
-        </div>
-        <p className="text-sm mb-3" style={{ color: "#9ca3af" }}>{desc}</p>
-        <pre
-          className="rounded-xl p-4 text-xs font-mono overflow-x-auto leading-relaxed whitespace-pre"
-          style={{ background: "#f8f9fc", color: "#4f6ef7", border: "1px solid #e5e7eb" }}
-        >
-          {code}
-        </pre>
-      </div>
-    ))}
-
-    {/* Info box */}
-    <div
-      className="rounded-2xl p-4 flex items-start gap-3"
-      style={{ background: "#eff6ff", border: "1px solid #bfdbfe" }}
-    >
-      <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-        style={{ background: "#4f6ef7" }}
-      >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-          <circle cx="12" cy="12" r="10" />
-          <line x1="12" y1="8" x2="12" y2="12" />
-          <line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg>
-      </div>
-      <div>
-        <p className="font-semibold text-sm mb-0.5" style={{ color: "#1d4ed8" }}>
-          💡 Never call from the browser
-        </p>
-        <p className="text-sm" style={{ color: "#3b82f6" }}>
-          Always send events from your server — never from frontend JS. That would expose your API key publicly.
-        </p>
-      </div>
-    </div>
-  </div>
-)}
+      {tab === "install" && (
+        <div className="max-w-2xl space-y-4">
+          {[
+            {
+              step: "1",
+              title: "Add the script to your website",
+              desc: "Paste before the closing </body> tag on every page.",
+              code: scriptTag,
+              key: "script",
+              color: "#4f6ef7",
+              bg: "#e0e7ff",
+            },
+            {
+              step: "2",
+              title: "Send events from your server",
+              desc: "Call this from your backend whenever a purchase or signup happens.",
+              code: `fetch('${origin}/api/event', {\n  method: 'POST',\n  headers: { 'Content-Type': 'application/json' },\n  body: JSON.stringify({\n    apiKey: '${project.api_key}',\n    type: 'purchase',\n    name: 'Ahmed',\n    city: 'Dhaka',\n    product: 'Running Shoes'\n  })\n})`,
+              key: "fetch",
+              color: "#10b981",
+              bg: "#d1fae5",
+            },
+            {
+              step: "3",
+              title: "Test with curl",
+              desc: "Run this in your terminal to send a test event.",
+              code: curlCmd,
+              key: "curl",
+              color: "#f59e0b",
+              bg: "#fef3c7",
+            },
+          ].map(({ step, title, desc, code, key, color, bg }) => (
+            <div
+              key={step}
+              className="rounded-2xl p-5"
+              style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div
+                  className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold shrink-0"
+                  style={{ background: bg, color }}
+                >
+                  {step}
+                </div>
+                <p className="font-semibold text-sm" style={{ color: "#1a1d2e" }}>{title}</p>
+                <button
+                  onClick={() => copyText(code, key)}
+                  className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition-all"
+                  style={{
+                    background: copied === key ? "#d1fae5" : "#f3f4f6",
+    
