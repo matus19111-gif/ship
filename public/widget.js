@@ -1,6 +1,5 @@
 /**
- * Social Proof Widget
- * Include on any website: <script src="https://yourdomain.com/widget.js" data-api-key="pk_xxx"></script>
+ * Social Proof Widget (with frontend test events)
  */
 (function () {
   'use strict';
@@ -16,6 +15,9 @@
   var API_BASE = scriptEl
     ? new URL(scriptEl.src).origin
     : window.location.origin;
+
+  // ✅ NEW: demo mode toggle
+  var DEMO_MODE = scriptEl && scriptEl.getAttribute('data-demo') === 'true';
 
   if (!API_KEY) {
     console.warn('[SocialProof] Missing data-api-key attribute on script tag.');
@@ -38,7 +40,7 @@
   var hideTimer = null;
   var rotateTimer = null;
 
-  // ─── Fetch helpers ────────────────────────────────────────────────────────
+  // ─── FETCH ────────────────────────────────────────────────────────────────
   function fetchJSON(url, cb) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -54,30 +56,32 @@
     xhr.send();
   }
 
-  // ─── Format message ───────────────────────────────────────────────────────
-  function formatMessage(event) {
-    var who = event.name ? '<strong>' + esc(event.name) + '</strong>' : 'Someone';
-    var where = event.city ? ' from <strong>' + esc(event.city) + '</strong>' : '';
-
-    switch (event.type) {
-      case 'purchase':
-        var what = event.product ? ' just purchased <strong>' + esc(event.product) + '</strong>' : ' just made a purchase';
-        return who + where + what;
-      case 'signup':
-        return who + ' just signed up';
-      case 'pageview':
-        return who + ' is viewing this page';
-      default:
-        return who + ' just interacted';
-    }
-  }
-
+  // ─── FORMAT ───────────────────────────────────────────────────────────────
   function esc(str) {
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
       .replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;');
+  }
+
+  function formatMessage(event) {
+    var who = event.name ? '<strong>' + esc(event.name) + '</strong>' : 'Someone';
+    var where = event.city ? ' from <strong>' + esc(event.city) + '</strong>' : '';
+
+    switch (event.type) {
+      case 'purchase':
+        var what = event.product
+          ? ' just purchased <strong>' + esc(event.product) + '</strong>'
+          : ' just made a purchase';
+        return who + where + what;
+
+      case 'signup':
+        return who + ' just signed up';
+
+      default:
+        return who + ' just interacted';
+    }
   }
 
   function timeAgo(dateStr) {
@@ -93,103 +97,67 @@
     return icons[type] || '⚡';
   }
 
-  // ─── Styles ───────────────────────────────────────────────────────────────
-  function injectStyles() {
-    if (document.getElementById('sp-styles')) return;
+  // ─── NEW: FRONTEND EVENT EMITTER ─────────────────────────────────────────
+  function pushEvent(event) {
+    events.unshift(event); // add to front
 
-    var isDark = config.theme === 'dark';
-    var isRight = config.position === 'bottom-right';
-
-    var css = [
-      '#sp-popup{',
-        'position:fixed;',
-        'bottom:20px;',
-        (isRight ? 'right:20px;' : 'left:20px;'),
-        'z-index:2147483647;',
-        'max-width:300px;',
-        'min-width:240px;',
-        'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;',
-        'opacity:0;',
-        'transform:translateY(16px);',
-        'transition:opacity 0.3s ease,transform 0.3s ease;',
-        'pointer-events:none;',
-      '}',
-      '#sp-popup.sp-visible{',
-        'opacity:1;',
-        'transform:translateY(0);',
-        'pointer-events:auto;',
-      '}',
-      '#sp-inner{',
-        'background:' + (isDark ? '#1f2937' : '#ffffff') + ';',
-        'color:' + (isDark ? '#f9fafb' : '#111827') + ';',
-        'border:1px solid ' + (isDark ? '#374151' : '#e5e7eb') + ';',
-        'border-radius:14px;',
-        'padding:12px 14px;',
-        'box-shadow:0 4px 24px rgba(0,0,0,' + (isDark ? '0.4' : '0.1') + ');',
-        'display:flex;',
-        'align-items:center;',
-        'gap:10px;',
-      '}',
-      '#sp-icon{',
-        'width:36px;height:36px;',
-        'border-radius:50%;',
-        'background:linear-gradient(135deg,#6366f1,#8b5cf6);',
-        'display:flex;align-items:center;justify-content:center;',
-        'font-size:17px;flex-shrink:0;',
-      '}',
-      '#sp-body{flex:1;min-width:0;}',
-      '#sp-msg{',
-        'font-size:13px;line-height:1.45;',
-        'margin:0;word-break:break-word;',
-      '}',
-      '#sp-time{',
-        'font-size:11px;',
-        'color:' + (isDark ? '#9ca3af' : '#6b7280') + ';',
-        'margin-top:3px;',
-      '}',
-      '#sp-close{',
-        'background:none;border:none;cursor:pointer;',
-        'font-size:15px;line-height:1;',
-        'color:' + (isDark ? '#9ca3af' : '#9ca3af') + ';',
-        'padding:2px;flex-shrink:0;',
-        'opacity:0.6;',
-      '}',
-      '#sp-close:hover{opacity:1;}',
-    ].join('');
-
-    var styleEl = document.createElement('style');
-    styleEl.id = 'sp-styles';
-    styleEl.textContent = css;
-    document.head.appendChild(styleEl);
+    // auto show immediately
+    currentIndex = 0;
+    showNext();
   }
 
-  // ─── DOM ──────────────────────────────────────────────────────────────────
+  // expose globally for testing
+  window.__sp_emitPurchase = function (data) {
+    pushEvent({
+      type: 'purchase',
+      name: data?.name || 'Test User',
+      city: data?.city || 'Dhaka',
+      product: data?.product || 'Test Product',
+      created_at: new Date().toISOString()
+    });
+  };
+
+  window.__sp_emitEvent = function (event) {
+    pushEvent(Object.assign({
+      created_at: new Date().toISOString()
+    }, event));
+  };
+
+  // ─── AUTO DEMO (every 10s) ───────────────────────────────────────────────
+  if (DEMO_MODE) {
+    setInterval(function () {
+      window.__sp_emitPurchase({
+        name: 'Demo User',
+        city: 'Narayanganj',
+        product: 'Demo Item ' + Math.floor(Math.random() * 100)
+      });
+    }, 10000);
+  }
+
+  // ─── UI (unchanged parts kept minimal) ───────────────────────────────────
   function createPopup() {
     var el = document.createElement('div');
     el.id = 'sp-popup';
-    el.setAttribute('role', 'status');
-    el.setAttribute('aria-live', 'polite');
-    el.innerHTML = [
-      '<div id="sp-inner">',
-        '<div id="sp-icon"></div>',
-        '<div id="sp-body">',
-          '<p id="sp-msg"></p>',
-          '<p id="sp-time"></p>',
-        '</div>',
-        '<button id="sp-close" aria-label="Close">&times;</button>',
-      '</div>',
-    ].join('');
+    el.innerHTML =
+      '<div id="sp-inner">' +
+        '<div id="sp-icon"></div>' +
+        '<div id="sp-body">' +
+          '<p id="sp-msg"></p>' +
+          '<p id="sp-time"></p>' +
+        '</div>' +
+        '<button id="sp-close">&times;</button>' +
+      '</div>';
 
-    el.querySelector('#sp-close').addEventListener('click', hidePopup);
+    el.querySelector('#sp-close').onclick = hidePopup;
     document.body.appendChild(el);
     return el;
   }
 
-  // ─── Show / Hide ──────────────────────────────────────────────────────────
   function showNext() {
-    var filtered = events.filter(function (e) {
-      return config.enabled_types.indexOf(e.type) !== -1;
-    });
+    var filtered = events.filter(e =>
+      config.enabled_types.indexOf(e.type) !== -1
+    );
+
     if (!filtered.length) return;
 
     var event = filtered[currentIndex % filtered.length];
@@ -211,22 +179,15 @@
     if (popupEl) popupEl.classList.remove('sp-visible');
   }
 
-  // ─── Boot ─────────────────────────────────────────────────────────────────
+  // ─── BOOT ─────────────────────────────────────────────────────────────────
   function boot() {
-    // 1. Fetch config
-    fetchJSON(API_BASE + '/api/config?apiKey=' + encodeURIComponent(API_KEY), function (err, data) {
-      if (!err && data && data.config) {
-        Object.assign(config, data.config);
-      }
+    fetchJSON(API_BASE + '/api/config?apiKey=' + API_KEY, function (_, data) {
+      if (data && data.config) Object.assign(config, data.config);
 
-      // 2. Fetch events
-      fetchJSON(API_BASE + '/api/event?apiKey=' + encodeURIComponent(API_KEY), function (err2, data2) {
-        if (err2 || !data2 || !data2.events || !data2.events.length) return;
+      fetchJSON(API_BASE + '/api/event?apiKey=' + API_KEY, function (_, data2) {
+        if (data2 && data2.events) events = data2.events;
 
-        events = data2.events;
-        injectStyles();
-
-        // 3. Start after delay
+        // initial render
         setTimeout(function () {
           showNext();
           rotateTimer = setInterval(showNext, config.rotateInterval * 1000);
@@ -235,7 +196,6 @@
     });
   }
 
-  // Wait for DOM before booting
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);
   } else {
