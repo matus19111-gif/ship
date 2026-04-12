@@ -30,6 +30,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <ClientLayout>{children}</ClientLayout>
         <ScrollReveal />
+        
+        {/* Crisp Chat - Already correct */}
         <Script id="crisp-chat" strategy="afterInteractive">
           {`
             window.$crisp = [];
@@ -43,7 +45,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             })();
           `}
         </Script>
-      <script src="https://ship-lime.vercel.app/widget.js" data-api-key="pk_01eb946762294f22a96da7ac39c34b66"></script>
+        
+        {/* FIXED: Convert regular script to Next.js Script */}
+        <Script 
+          src="https://ship-lime.vercel.app/widget.js" 
+          strategy="afterInteractive"
+          data-api-key="pk_01eb946762294f22a96da7ac39c34b66"
+        />
       </body>
     </html>
   );
