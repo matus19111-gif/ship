@@ -51,6 +51,7 @@ export default function ProjectDetailPage() {
   const router = useRouter();
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<"events" | "settings" | "install">("events");
   const [settings, setSettings] = useState<Settings | null>(null);
   const [saving, setSaving] = useState(false);
@@ -59,10 +60,19 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     fetch(`/api/projects/${id}`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch project");
+        return r.json();
+      })
       .then((d) => {
+        if (!d.project) throw new Error("Project not found");
         setProject(d.project);
         setSettings(d.project?.campaigns?.[0]?.settings ?? null);
+        setError(null);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setProject(null);
       })
       .finally(() => setLoading(false));
   }, [id]);
@@ -70,20 +80,32 @@ export default function ProjectDetailPage() {
   async function saveSettings() {
     if (!settings) return;
     setSaving(true);
-    await fetch(`/api/projects/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ settings }),
-    });
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2000);
+    try {
+      const res = await fetch(`/api/projects/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ settings }),
+      });
+      if (!res.ok) throw new Error("Failed to save settings");
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setSaving(false);
+    }
   }
 
   async function deleteProject() {
     if (!confirm("Delete this project? All events will be lost.")) return;
-    await fetch(`/api/projects/${id}`, { method: "DELETE" });
-    router.push("/dashboard/projects");
+    try {
+      const res = await fetch(`/api/projects/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete project");
+      router.push("/dashboard/projects");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to delete project");
+    }
   }
 
   function copyText(text: string, key: string) {
@@ -103,10 +125,12 @@ export default function ProjectDetailPage() {
     );
   }
 
-  if (!project) {
+  if (error || !project) {
     return (
       <div className="text-center py-20">
-        <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>Project not found.</p>
+        <p className="text-sm mb-4" style={{ color: "#9ca3af" }}>
+          {error || "Project not found."}
+        </p>
         <Link
           href="/dashboard/projects"
           className="text-sm font-semibold"
@@ -118,8 +142,8 @@ export default function ProjectDetailPage() {
     );
   }
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://yourdomain.com";
-  const scriptTag = `<script src="${origin}/widget.js" data-api-key="${project.api_key}">` + `</script>`;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const scriptTag = `<script src="${origin}/widget.js" data-api-key="${project.api_key}"></script>`;
   const curlCmd = [
     `curl -X POST ${origin}/api/event \\`,
     `  -H "Content-Type: application/json" \\`,
@@ -454,7 +478,7 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      {/* ── INSTALL TAB ── */}
+         {/* ── INSTALL TAB ── */}
       {tab === "install" && (
         <div className="max-w-2xl space-y-4">
           {[
@@ -545,5 +569,7 @@ export default function ProjectDetailPage() {
         </div>
       )}
     </div>
+    );
+}
   );
 }
