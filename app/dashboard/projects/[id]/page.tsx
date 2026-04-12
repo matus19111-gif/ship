@@ -120,7 +120,11 @@ export default function ProjectDetailPage() {
 
   const origin = typeof window !== "undefined" ? window.location.origin : "https://yourdomain.com";
   const scriptTag = `<script src="${origin}/widget.js" data-api-key="${project.api_key}"></script>`;
-  const curlCmd = `curl -X POST ${origin}/api/event \\\n  -H "Content-Type: application/json" \\\n  -d '{"apiKey":"${project.api_key}","type":"purchase","name":"Ahmed","city":"Dhaka","product":"Running Shoes"}'`;
+  const curlCmd = [
+    `curl -X POST ${origin}/api/event \\`,
+    `  -H "Content-Type: application/json" \\`,
+    `  -d '{"apiKey":"${project.api_key}","type":"purchase","name":"Ahmed","city":"Dhaka","product":"Running Shoes"}'`,
+  ].join("\n");
 
   return (
     <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
@@ -500,4 +504,4 @@ export default function ProjectDetailPage() {
                   className="ml-auto flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1.5 rounded-lg transition-all"
                   style={{
                     background: copied === key ? "#d1fae5" : "#f3f4f6",
-                    color: copied === key ?
+         
