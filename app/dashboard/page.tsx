@@ -1,4 +1,3 @@
-import ButtonAccount from "@/components/ButtonAccount";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import Link from "next/link";
@@ -39,11 +38,13 @@ export default async function DashboardPage() {
     return "Good evening";
   };
 
+  const initials = user?.email?.slice(0, 2).toUpperCase() ?? "??";
+
   const stats = [
     {
       label: "Total Projects",
       value: projects?.length ?? 0,
-      sub: "+5% from yesterday",
+      sub: "All active",
       accent: "#10b981",
       bg: "#d1fae5",
       icon: (
@@ -92,28 +93,30 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div>
+    <div style={{ fontFamily: "'DM Sans', sans-serif" }}>
       {/* Top bar */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="font-bold text-[22px] leading-tight" style={{ color: "#1a1d2e", fontFamily: "'DM Sans', sans-serif" }}>
+          <h1 className="font-bold text-[22px] leading-tight" style={{ color: "#1a1d2e" }}>
             {greeting()} 👋
           </h1>
           <p className="text-sm mt-0.5" style={{ color: "#9ca3af" }}>
             Here&apos;s what&apos;s happening with your social proof widgets.
           </p>
         </div>
+
+        {/* User avatar — replaces ButtonAccount */}
         <div className="flex items-center gap-3">
-          <button
-            className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl border transition-colors"
-            style={{ borderColor: "#e5e7eb", color: "#6b7280", background: "#fff" }}
+          <div className="text-right hidden sm:block">
+            <p className="text-xs font-semibold" style={{ color: "#374151" }}>{user?.email}</p>
+            <p className="text-[10px]" style={{ color: "#b0b7c3" }}>Signed in</p>
+          </div>
+          <div
+            className="w-9 h-9 rounded-xl flex items-center justify-center text-white text-xs font-bold shrink-0"
+            style={{ background: "linear-gradient(135deg, #4f6ef7, #ec4899)" }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
-            </svg>
-            Export
-          </button>
-          <ButtonAccount />
+            {initials}
+          </div>
         </div>
       </div>
 
@@ -169,7 +172,9 @@ export default async function DashboardPage() {
             {["#", "Project", "Domain", "Events", "Status"].map((h) => (
               <p
                 key={h}
-                className={`text-[10px] font-semibold uppercase tracking-wider ${h === "#" ? "col-span-1" : h === "Project" ? "col-span-4" : h === "Domain" ? "col-span-3" : h === "Events" ? "col-span-2" : "col-span-2"}`}
+                className={`text-[10px] font-semibold uppercase tracking-wider ${
+                  h === "#" ? "col-span-1" : h === "Project" ? "col-span-4" : h === "Domain" ? "col-span-3" : h === "Events" ? "col-span-2" : "col-span-2"
+                }`}
                 style={{ color: "#b0b7c3" }}
               >
                 {h}
@@ -211,18 +216,10 @@ export default async function DashboardPage() {
                   </div>
                   <p className="col-span-3 text-xs truncate" style={{ color: "#9ca3af" }}>{p.domain ?? "—"}</p>
                   <div className="col-span-2">
-                    <div className="flex items-center gap-1.5">
-                      <p className="text-sm font-bold" style={{ color: "#4f6ef7" }}>
-                        {(countMap[p.id] ?? 0).toLocaleString()}
-                      </p>
-                    </div>
-                    <div
-                      className="h-1 rounded-full mt-1"
-                      style={{
-                        background: "#e0e7ff",
-                        width: "100%",
-                      }}
-                    >
+                    <p className="text-sm font-bold" style={{ color: "#4f6ef7" }}>
+                      {(countMap[p.id] ?? 0).toLocaleString()}
+                    </p>
+                    <div className="h-1 rounded-full mt-1" style={{ background: "#e0e7ff" }}>
                       <div
                         className="h-1 rounded-full"
                         style={{
@@ -248,7 +245,6 @@ export default async function DashboardPage() {
 
         {/* Quick Actions */}
         <div className="space-y-4">
-          {/* Quick stats card */}
           <div
             className="rounded-2xl p-5"
             style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)", boxShadow: "0 4px 20px rgba(79,110,247,0.3)" }}
@@ -274,7 +270,6 @@ export default async function DashboardPage() {
             </div>
           </div>
 
-          {/* Quick links */}
           <div
             className="rounded-2xl p-5"
             style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
@@ -309,5 +304,4 @@ export default async function DashboardPage() {
       </div>
     </div>
   );
-      }
-                    
+                 }
