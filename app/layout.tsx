@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Script 
           src="https://ship-lime.vercel.app/widget.js" 
           strategy="afterInteractive"
-          data-api-key="pk_72c164cd6bde42cb97d89951716fa6fd"
+          data-api-key="pk_03a410fc9b654d1c830155b5758ba12c"
         />
       </body>
     </html>
