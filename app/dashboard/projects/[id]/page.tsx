@@ -81,7 +81,7 @@ function buildPreviewEvent(settings: Settings) {
   const names    = settings.synthetic_data.names.length    ? settings.synthetic_data.names    : GLOBAL_NAMES;
   const cities   = settings.synthetic_data.cities.length   ? settings.synthetic_data.cities   : GLOBAL_CITIES;
   const products = settings.synthetic_data.products.length ? settings.synthetic_data.products : ["Pro Plan", "Starter Plan"];
-  const types    = ["purchase", "signup"] as const;
+  const types    = ["purchase", "signup"];
   const type     = pick(types);
   const name     = pick(names);
   const city     = pick(cities);
