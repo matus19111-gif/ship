@@ -93,3 +93,21 @@ export function generateHotStatsNotification(id?: string): Notification {
   }
 }
 
+/**
+ * ADDED THIS: The missing export that was breaking the build
+ */
+export function generateRandomNotification(): Notification {
+  const types: Array<'conversion' | 'live' | 'hotstats'> = ['conversion', 'live', 'hotstats']
+  const type = pick(types)
+
+  switch (type) {
+    case 'conversion':
+      return generateConversionNotification()
+    case 'live':
+      return generateLiveNotification()
+    case 'hotstats':
+      return generateHotStatsNotification()
+    default:
+      return generateConversionNotification()
+  }
+}
