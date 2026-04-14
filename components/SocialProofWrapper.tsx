@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+// Added React to the import line below
+import React, { useEffect, useState } from 'react'
 import { SocialProofProvider, SocialProofPopup } from '@/components/social-proof'
 import { Notification, SocialProofConfig } from '@/types/social-proof'
 
