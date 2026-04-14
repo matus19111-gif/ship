@@ -16,6 +16,7 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   const { data: projects } = await supabase
     .from("projects")
     .select("id, name, api_key")
+    .eq("user_id", session.user.id)
     .order("created_at", { ascending: false });
 
   return (
