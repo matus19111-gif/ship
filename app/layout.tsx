@@ -5,6 +5,7 @@ import PlausibleProvider from "next-plausible";
 import { getSEOTags } from "@/libs/seo";
 import ClientLayout from "@/components/LayoutClient";
 import ScrollReveal from "@/components/ScrollReveal";
+import SocialProofWrapper from "@/components/SocialProofWrapper"; // ← ADD
 import config from "@/config";
 import Script from "next/script";
 import "./globals.css";
@@ -28,10 +29,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </head>
       )}
       <body>
-        <ClientLayout>{children}</ClientLayout>
-        <ScrollReveal />
-        
-        {/* Crisp Chat - Already correct */}
+        <SocialProofWrapper>                       {/* ← ADD */}
+          <ClientLayout>{children}</ClientLayout>
+          <ScrollReveal />
+        </SocialProofWrapper>                      {/* ← ADD */}
+
         <Script id="crisp-chat" strategy="afterInteractive">
           {`
             window.$crisp = [];
@@ -45,10 +47,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             })();
           `}
         </Script>
-        
-        {/* FIXED: Convert regular script to Next.js Script */}
-        <Script 
-          src="https://ship-lime.vercel.app/widget.js" 
+
+        <Script
+          src="https://ship-lime.vercel.app/widget.js"
           strategy="afterInteractive"
           data-api-key="pk_4f91892f546747fa83f373d9fa8c3709"
         />
