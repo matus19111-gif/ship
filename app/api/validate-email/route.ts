@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
-import { validateEmail, validateEmailsBulk } from "@/lib/email-validator";
+import { validateEmail, validateEmailsBulk } from "@/libs/email-validator";
 import { BulkValidateEmailRequest, ValidateEmailRequest } from "@/types/email-validation";
 
 // ─── Supabase client (server-side) ────────────────────────────────────────────
