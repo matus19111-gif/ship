@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { supabaseAdmin } from '@/lib/supabase-admin'
+import { supabaseAdmin } from '@/libs/supabase-admin'
 
 // ─── GET /api/projects ────────────────────────────────────────────────────────
 // Returns all projects for the logged-in user.
