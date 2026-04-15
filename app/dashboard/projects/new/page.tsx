@@ -55,7 +55,7 @@ export default function NewProjectPage() {
         <button onClick={handleCreate} disabled={loading}
           className="w-full text-sm font-semibold text-white py-3 rounded-xl transition-opacity hover:opacity-90 disabled:opacity-50 flex items-center justify-center gap-2"
           style={{ background: "linear-gradient(135deg,#6366f1,#8b5cf6)" }}>
-          {loading ? (<><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Creating…</>) : "Create Project →"}
+          {loading ? (<><span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />Creating...</>) : "Create Project →"}
         </button>
       </div>
     </div>
