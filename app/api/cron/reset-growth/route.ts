@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { resetWeeklyGrowth } from '@/lib/weeklyReset'
+import { resetWeeklyGrowth } from '@/libs/weeklyReset'
 
 /**
  * GET /api/cron/reset-growth
