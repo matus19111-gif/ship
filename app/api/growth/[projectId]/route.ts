@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import { supabaseAdmin } from '@/libs/supabase-admin'
-import { calculateDailyValue, getDayIndex, recalcRemainingDays } from '@/lib/growthEngine'
+import { calculateDailyValue, getDayIndex, recalcRemainingDays } from '@/libs/growthEngine'
 import { SocialProofGrowth, GrowthConfig } from '@/types/growth'
 
 type Params = { params: Promise<{ projectId: string }> }
