@@ -6,7 +6,7 @@ import React, {
 } from 'react'
 import { Notification, SocialProofConfig, SocialProofContextType } from '@/types/social-proof'
 import { GrowthSnapshot } from '@/types/growth'
-import { defaultConfig } from './data'
+import { defaultConfig } from '@/lib/growthEngine' // ← Changed: import from growth engine instead of ./data
 
 const SocialProofContext = createContext<SocialProofContextType | null>(null)
 
