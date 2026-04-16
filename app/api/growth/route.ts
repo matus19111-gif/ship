@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
 
   // ── Persist today's computed value back to DB (async, fire-and-forget) ─────
   // This keeps current_value fresh for the dashboard's "today's number" display.
-  // ✅ FIX: Removed the empty .then(() => {}) which was causing the type error
+  // ✅ FIX: Use async IIFE or Promise.resolve().then() pattern
   for (const row of rows as SocialProofGrowth[]) {
     const dayIndex = getDayIndex(row.reset_day)
     const value = calculateDailyValue(
@@ -110,11 +110,21 @@ export async function GET(req: NextRequest) {
       dayIndex,
       row.growth_style,
     )
+    // ✅ Fixed: Execute the query and handle errors with .then().catch()
     supabaseAdmin
       .from('social_proof_growth')
-      .update({ current_value: value, current_day: dayIndex, updated_at: new Date().toISOString() })
+      .update({ 
+        current_value: value, 
+        current_day: dayIndex, 
+        updated_at: new Date().toISOString() 
+      })
       .eq('id', row.id)
-      .catch((err: unknown) => console.error('[growth persist]', err))
+      .then(() => {
+        // Success - do nothing
+      })
+      .catch((err: unknown) => {
+        console.error('[growth persist]', err)
+      })
   }
 
   // ── Cache and respond ──────────────────────────────────────────────────────
@@ -130,4 +140,4 @@ export async function GET(req: NextRequest) {
       },
     },
   )
-  }
+}
