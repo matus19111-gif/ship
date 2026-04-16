@@ -101,6 +101,7 @@ export async function GET(req: NextRequest) {
 
   // ── Persist today's computed value back to DB (async, fire-and-forget) ─────
   // This keeps current_value fresh for the dashboard's "today's number" display.
+  // ✅ FIX: Removed the empty .then(() => {}) which was causing the type error
   for (const row of rows as SocialProofGrowth[]) {
     const dayIndex = getDayIndex(row.reset_day)
     const value = calculateDailyValue(
@@ -113,7 +114,6 @@ export async function GET(req: NextRequest) {
       .from('social_proof_growth')
       .update({ current_value: value, current_day: dayIndex, updated_at: new Date().toISOString() })
       .eq('id', row.id)
-      .then(() => {})
       .catch((err: unknown) => console.error('[growth persist]', err))
   }
 
@@ -130,5 +130,4 @@ export async function GET(req: NextRequest) {
       },
     },
   )
-      }
-      
+  }
