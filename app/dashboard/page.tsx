@@ -54,14 +54,14 @@ export default async function DashboardPage() {
       ),
     },
     {
-      label: "Total Events",
-      value: totalEvents.toLocaleString(),
-      sub: "All time",
+      label: "Growth Widgets",
+      value: projects?.length ?? 0,
+      sub: "Progressive counters",
       accent: "#4f6ef7",
       bg: "#e0e7ff",
       icon: (
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4f6ef7" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" /><polyline points="16 7 22 7 22 13" />
         </svg>
       ),
     },
@@ -249,9 +249,9 @@ export default async function DashboardPage() {
             className="rounded-2xl p-5"
             style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)", boxShadow: "0 4px 20px rgba(79,110,247,0.3)" }}
           >
-            <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">Total Events</p>
-            <p className="text-white text-4xl font-bold mb-1">{totalEvents.toLocaleString()}</p>
-            <p className="text-white/60 text-xs">All time across all projects</p>
+            <p className="text-white/70 text-xs font-semibold uppercase tracking-wider mb-1">Growth Widgets Active</p>
+            <p className="text-white text-4xl font-bold mb-1">{projects?.length ?? 0}</p>
+            <p className="text-white/60 text-xs">Progressive social proof running</p>
             <div className="mt-4 pt-4" style={{ borderTop: "1px solid rgba(255,255,255,0.15)" }}>
               <div className="flex justify-between">
                 <div>
@@ -259,12 +259,12 @@ export default async function DashboardPage() {
                   <p className="text-white font-bold text-lg">{projects?.length ?? 0}</p>
                 </div>
                 <div>
-                  <p className="text-white/60 text-[10px]">Avg / Project</p>
-                  <p className="text-white font-bold text-lg">{avgEvents}</p>
+                  <p className="text-white/60 text-[10px]">Types / Project</p>
+                  <p className="text-white font-bold text-lg">3</p>
                 </div>
                 <div>
-                  <p className="text-white/60 text-[10px]">Live</p>
-                  <p className="text-white font-bold text-lg">{projects?.length ?? 0}</p>
+                  <p className="text-white/60 text-[10px]">Reset</p>
+                  <p className="text-white font-bold text-lg">Weekly</p>
                 </div>
               </div>
             </div>
@@ -278,8 +278,8 @@ export default async function DashboardPage() {
             <div className="space-y-2">
               {[
                 { label: "New Project", href: "/dashboard/projects/new", icon: "➕", color: "#4f6ef7", bg: "#e0e7ff" },
-                { label: "View Live Events", href: "/dashboard/events", icon: "⚡", color: "#f59e0b", bg: "#fef3c7" },
-                { label: "Install Guide", href: "/dashboard/install", icon: "📖", color: "#10b981", bg: "#d1fae5" },
+                { label: "Growth Config", href: "/dashboard/growth", icon: "📈", color: "#10b981", bg: "#d1fae5" },
+                { label: "Install Guide", href: "/dashboard/install", icon: "📖", color: "#f59e0b", bg: "#fef3c7" },
               ].map((action) => (
                 <Link
                   key={action.href}
@@ -304,4 +304,5 @@ export default async function DashboardPage() {
       </div>
     </div>
   );
-                 }
+                        }
+          
