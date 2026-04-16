@@ -1,4 +1,17 @@
 import { GrowthStyle, WeekSchedule } from '@/types/growth'
+import { SocialProofConfig } from '@/types/social-proof'
+
+// ─── DEFAULT CONFIGURATION ──────────────────────────────────────────────────────
+export const defaultConfig: SocialProofConfig = {
+  position: 'bottom-left',
+  theme: 'light',
+  initialDelay: 3,
+  interval: 8,
+  displayDuration: 5,
+  showProgress: true,
+  enableSound: false,
+  showOnMobile: true,
+}
 
 // ─── Day labels ───────────────────────────────────────────────────────────────
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -159,5 +172,4 @@ export function recalcRemainingDays(
  */
 export function interpolateMessage(template: string, value: number): string {
   return template.replace(/\{count\}/g, value.toLocaleString())
-  }
-                                           
+    }
