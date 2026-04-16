@@ -1,5 +1,6 @@
 'use client'
-
+import React from 'react'  // ← Add this
+// rest of your imports
 import { GrowthSnapshot, GrowthType } from '@/types/growth'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
