@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { supabaseAdmin } from '@/libs/supabase-admin'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 // ─── GET /api/projects ────────────────────────────────────────────────────────
 // Returns all projects for the logged-in user.
@@ -55,6 +55,23 @@ export async function POST(req: NextRequest) {
 
   // Create default widget settings for this project
   await supabaseAdmin.from('campaigns').insert({ project_id: project.id })
+
+  // Seed default (disabled) growth configs for all three types
+  const growthDefaults = [
+    { type: 'purchases', start_value: 55,  end_value: 159, message_template: '{count} people bought this week' },
+    { type: 'signups',   start_value: 12,  end_value: 45,  message_template: '{count} people joined this week' },
+    { type: 'visitors',  start_value: 18,  end_value: 72,  message_template: '{count} people visited this week' },
+  ]
+  await supabaseAdmin.from('social_proof_growth').insert(
+    growthDefaults.map((g) => ({
+      user_id: user.id,
+      project_id: project.id,
+      ...g,
+      current_value: g.start_value,
+      current_day: 0,
+      enabled: false,
+    })),
+  )
 
   return NextResponse.json({ project }, { status: 201 })
 }
