@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { GrowthConfig, GrowthType, GrowthStyle, ResetDay, WeekSchedule } from '@/types/growth'
+import React from 'react'  // ← Add this
+// rest of your imports
 import { buildWeekSchedule, interpolateMessage, getDayIndex } from '@/libs/growthEngine'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
