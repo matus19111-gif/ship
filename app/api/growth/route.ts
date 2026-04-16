@@ -101,8 +101,7 @@ export async function GET(req: NextRequest) {
 
   // ── Persist today's computed value back to DB (async, fire-and-forget) ─────
   // This keeps current_value fresh for the dashboard's "today's number" display.
-  // ✅ FIX: Use async IIFE or Promise.resolve().then() pattern
-  for (const row of rows as SocialProofGrowth[]) {
+  const updatePromises = (rows as SocialProofGrowth[]).map(async (row) => {
     const dayIndex = getDayIndex(row.reset_day)
     const value = calculateDailyValue(
       row.start_value,
@@ -110,22 +109,23 @@ export async function GET(req: NextRequest) {
       dayIndex,
       row.growth_style,
     )
-    // ✅ Fixed: Execute the query and handle errors with .then().catch()
-    supabaseAdmin
-      .from('social_proof_growth')
-      .update({ 
-        current_value: value, 
-        current_day: dayIndex, 
-        updated_at: new Date().toISOString() 
-      })
-      .eq('id', row.id)
-      .then(() => {
-        // Success - do nothing
-      })
-      .catch((err: unknown) => {
-        console.error('[growth persist]', err)
-      })
-  }
+    
+    try {
+      await supabaseAdmin
+        .from('social_proof_growth')
+        .update({ 
+          current_value: value, 
+          current_day: dayIndex, 
+          updated_at: new Date().toISOString() 
+        })
+        .eq('id', row.id)
+    } catch (err) {
+      console.error('[growth persist]', err)
+    }
+  })
+  
+  // Fire and forget - don't await
+  Promise.all(updatePromises).catch(console.error)
 
   // ── Cache and respond ──────────────────────────────────────────────────────
   cache.set(apiKey, { snapshots, expiresAt: Date.now() + CACHE_TTL_MS })
