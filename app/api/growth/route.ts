@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { supabaseAdmin } from '@/libs/supabase-admin'
-import { calculateDailyValue, getDayIndex, interpolateMessage } from '@/lib/growthEngine'
+import { calculateDailyValue, getDayIndex, interpolateMessage } from '@/libs/growthEngine'
 import { SocialProofGrowth, GrowthSnapshot } from '@/types/growth'
 
 // ─── 60-second in-memory cache ────────────────────────────────────────────────
