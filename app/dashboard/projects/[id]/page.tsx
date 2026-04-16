@@ -27,6 +27,14 @@ function timeAgo(d: string) {
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+
+  // Guard: Next.js App Router occasionally routes /projects/new into [id].
+  // Redirect immediately so new/page.tsx handles it correctly.
+  useEffect(() => {
+    if (id === "new") { router.replace("/dashboard/projects/new"); }
+  }, [id, router]);
+
+  if (id === "new") return null;
   const [project, setProject] = useState<Project | null>(null);
   const [growthConfigs, setGrowthConfigs] = useState<GrowthConfig[]>([]);
   const [loading, setLoading] = useState(true);
@@ -244,4 +252,4 @@ export default function ProjectDetailPage() {
       )}
     </div>
   );
-                      }
+          }
