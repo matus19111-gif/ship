@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import { supabaseAdmin } from '@/libs/supabase-admin'
+import { supabaseAdmin } from '@/lib/supabase-admin'
 
 type Params = { params: Promise<{ id: string }> }
 
@@ -38,7 +38,14 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   if (!project) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
 
-  return NextResponse.json({ project })
+  // Also fetch growth configs so the dashboard tab can render them
+  const { data: growthConfigs } = await supabaseAdmin
+    .from('social_proof_growth')
+    .select('*')
+    .eq('project_id', id)
+    .order('type')
+
+  return NextResponse.json({ project, growthConfigs: growthConfigs ?? [] })
 }
 
 // ─── PUT /api/projects/[id] ───────────────────────────────────────────────────
@@ -89,4 +96,4 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     .eq('user_id', user.id)
 
   return NextResponse.json({ success: true })
-}
+        }
