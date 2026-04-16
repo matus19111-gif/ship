@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { GrowthConfig, GrowthType, GrowthStyle, ResetDay, WeekSchedule } from '@/types/growth'
-import { buildWeekSchedule, interpolateMessage, getDayIndex } from '@/lib/growthEngine'
+import { buildWeekSchedule, interpolateMessage, getDayIndex } from '@/libs/growthEngine'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 const GROWTH_TYPES: { value: GrowthType; label: string; icon: string; defaultTemplate: string }[] = [
