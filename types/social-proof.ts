@@ -1,4 +1,6 @@
-export type NotificationType = 'conversion' | 'live' | 'hotstats' | 'cta' | 'purchase' | 'signup'
+import { GrowthSnapshot } from './growth'
+
+export type NotificationType = 'conversion' | 'live' | 'hotstats' | 'cta' | 'purchase' | 'signup' | 'growth'
 export type NotificationPosition = 'bottom-left' | 'bottom-right' | 'top-left' | 'top-right'
 export type NotificationTheme = 'light' | 'dark'
 
@@ -21,6 +23,8 @@ export interface Notification {
   ctaButtonUrl?: string
   verifiedText?: string
   showVerified?: boolean
+  // growth — carries the full snapshot so GrowthCard can render it
+  growthSnapshot?: GrowthSnapshot
 }
 
 export interface SocialProofConfig {
