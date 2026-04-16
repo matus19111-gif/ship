@@ -1,5 +1,5 @@
 /**
- * Social Proof Widget
+ * Social Proof Widget — Growth Edition
  * Include on any website: <script src="https://yourdomain.com/widget.js" data-api-key="pk_xxx"></script>
  */
 (function () {
@@ -29,16 +29,36 @@
     delay: 5,
     displayDuration: 5,
     rotateInterval: 15,
-    enabled_types: ['purchase', 'signup'],
   };
 
-  var events = [];
+  // Client-side 60-second cache so rapid page navigations don't re-fetch
+  var CACHE_KEY = 'sp_growth_' + API_KEY;
+  var CACHE_TTL = 60 * 1000;
+
+  var snapshots = [];   // array of { type, value, message, day_of_week, start_value, end_value }
   var currentIndex = 0;
   var popupEl = null;
   var hideTimer = null;
   var rotateTimer = null;
 
-  // ─── Fetch helpers ────────────────────────────────────────────────────────
+  // ─── Cache helpers ────────────────────────────────────────────────────────
+  function readCache() {
+    try {
+      var raw = sessionStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (Date.now() > parsed.expiresAt) { sessionStorage.removeItem(CACHE_KEY); return null; }
+      return parsed.data;
+    } catch (e) { return null; }
+  }
+
+  function writeCache(data) {
+    try {
+      sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data: data, expiresAt: Date.now() + CACHE_TTL }));
+    } catch (e) {}
+  }
+
+  // ─── Fetch helper ─────────────────────────────────────────────────────────
   function fetchJSON(url, cb) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', url, true);
@@ -54,49 +74,33 @@
     xhr.send();
   }
 
-  // ─── Format message ───────────────────────────────────────────────────────
-  function formatMessage(event) {
-    var who = event.name ? '<strong>' + esc(event.name) + '</strong>' : 'Someone';
-    var where = event.city ? ' from <strong>' + esc(event.city) + '</strong>' : '';
-
-    switch (event.type) {
-      case 'purchase':
-        var what = event.product ? ' just purchased <strong>' + esc(event.product) + '</strong>' : ' just made a purchase';
-        return who + where + what;
-      case 'signup':
-        return who + ' just signed up';
-      case 'pageview':
-        return who + ' is viewing this page';
-      default:
-        return who + ' just interacted';
+  // ─── Week progress bar SVG ────────────────────────────────────────────────
+  function buildProgressBar(dayIndex, accentColor) {
+    var bars = '';
+    for (var i = 0; i < 7; i++) {
+      var color = i < dayIndex ? '#e5e7eb' : i === dayIndex ? accentColor : '#f3f4f6';
+      var opacity = i === dayIndex ? '1' : i < dayIndex ? '0.5' : '0.25';
+      bars += '<div style="flex:1;height:3px;border-radius:2px;background:' + color + ';opacity:' + opacity + '"></div>';
     }
+    return '<div style="display:flex;gap:2px;margin-top:6px;">' + bars + '</div>';
   }
+
+  // ─── Type config ──────────────────────────────────────────────────────────
+  var TYPE_META = {
+    purchases: { icon: '🔥', color: '#f97316' },
+    signups:   { icon: '👋', color: '#3b82f6' },
+    visitors:  { icon: '👀', color: '#8b5cf6' },
+  };
 
   function esc(str) {
     return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  function timeAgo(dateStr) {
-    var diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
-    if (diff < 60) return diff + 's ago';
-    if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
-    if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
-    return Math.floor(diff / 86400) + 'd ago';
-  }
-
-  function getIcon(type) {
-    var icons = { purchase: '🛒', signup: '👋', pageview: '👀', custom: '⚡' };
-    return icons[type] || '⚡';
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
 
   // ─── Styles ───────────────────────────────────────────────────────────────
   function injectStyles() {
     if (document.getElementById('sp-styles')) return;
-
     var isDark = config.theme === 'dark';
     var isRight = config.position === 'bottom-right';
 
@@ -106,53 +110,34 @@
         'bottom:20px;',
         (isRight ? 'right:20px;' : 'left:20px;'),
         'z-index:2147483647;',
-        'max-width:300px;',
-        'min-width:240px;',
+        'max-width:310px;min-width:240px;width:calc(100vw - 40px);',
         'font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;',
-        'opacity:0;',
-        'transform:translateY(16px);',
-        'transition:opacity 0.3s ease,transform 0.3s ease;',
+        'opacity:0;transform:translateY(16px) scale(0.97);',
+        'transition:opacity 0.35s cubic-bezier(0.16,1,0.3,1),transform 0.35s cubic-bezier(0.16,1,0.3,1);',
         'pointer-events:none;',
       '}',
-      '#sp-popup.sp-visible{',
-        'opacity:1;',
-        'transform:translateY(0);',
-        'pointer-events:auto;',
-      '}',
+      '#sp-popup.sp-visible{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}',
       '#sp-inner{',
-        'background:' + (isDark ? '#1f2937' : '#ffffff') + ';',
+        'background:' + (isDark ? '#1a1d2e' : '#ffffff') + ';',
         'color:' + (isDark ? '#f9fafb' : '#111827') + ';',
-        'border:1px solid ' + (isDark ? '#374151' : '#e5e7eb') + ';',
-        'border-radius:14px;',
-        'padding:12px 14px;',
-        'box-shadow:0 4px 24px rgba(0,0,0,' + (isDark ? '0.4' : '0.1') + ');',
-        'display:flex;',
-        'align-items:center;',
-        'gap:10px;',
+        'border:1px solid ' + (isDark ? '#2a2d3e' : '#f0f1f3') + ';',
+        'border-radius:16px;',
+        'padding:14px 16px 14px 14px;',
+        'box-shadow:0 4px 32px rgba(0,0,0,' + (isDark ? '0.5' : '0.10') + '),0 1px 6px rgba(0,0,0,0.06);',
+        'display:flex;align-items:flex-start;gap:12px;',
       '}',
-      '#sp-icon{',
-        'width:36px;height:36px;',
-        'border-radius:50%;',
-        'background:linear-gradient(135deg,#6366f1,#8b5cf6);',
-        'display:flex;align-items:center;justify-content:center;',
-        'font-size:17px;flex-shrink:0;',
-      '}',
+      '#sp-progress{height:2px;border-radius:2px;background:' + (isDark ? '#2a2d3e' : '#f0f1f3') + ';overflow:hidden;border-radius:16px 16px 0 0;}',
+      '#sp-progress-bar{height:100%;background:#4f6ef7;transition:width linear;}',
+      '#sp-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;background:' + (isDark ? 'rgba(79,110,247,0.15)' : '#f0f3ff') + ';}',
       '#sp-body{flex:1;min-width:0;}',
-      '#sp-msg{',
-        'font-size:13px;line-height:1.45;',
-        'margin:0;word-break:break-word;',
-      '}',
-      '#sp-time{',
-        'font-size:11px;',
-        'color:' + (isDark ? '#9ca3af' : '#6b7280') + ';',
-        'margin-top:3px;',
-      '}',
+      '#sp-count{font-size:22px;font-weight:900;line-height:1;letter-spacing:-0.5px;margin:0;}',
+      '#sp-label{font-size:13px;margin-top:2px;line-height:1.4;color:' + (isDark ? '#9ca3af' : '#6b7280') + ';}',
       '#sp-close{',
         'background:none;border:none;cursor:pointer;',
-        'font-size:15px;line-height:1;',
-        'color:' + (isDark ? '#9ca3af' : '#9ca3af') + ';',
-        'padding:2px;flex-shrink:0;',
-        'opacity:0.6;',
+        'font-size:14px;line-height:1;',
+        'color:' + (isDark ? '#4b5563' : '#d1d5db') + ';',
+        'padding:2px;flex-shrink:0;margin-top:1px;',
+        'opacity:0.7;transition:opacity 0.2s;',
       '}',
       '#sp-close:hover{opacity:1;}',
     ].join('');
@@ -170,38 +155,57 @@
     el.setAttribute('role', 'status');
     el.setAttribute('aria-live', 'polite');
     el.innerHTML = [
+      '<div id="sp-progress"><div id="sp-progress-bar" style="width:100%"></div></div>',
       '<div id="sp-inner">',
         '<div id="sp-icon"></div>',
         '<div id="sp-body">',
-          '<p id="sp-msg"></p>',
-          '<p id="sp-time"></p>',
+          '<p id="sp-count"></p>',
+          '<p id="sp-label"></p>',
+          '<div id="sp-week"></div>',
         '</div>',
         '<button id="sp-close" aria-label="Close">&times;</button>',
       '</div>',
     ].join('');
 
-    el.querySelector('#sp-close').addEventListener('click', hidePopup);
+    el.querySelector('#sp-close').addEventListener('click', function () {
+      hidePopup();
+      clearInterval(rotateTimer);
+    });
     document.body.appendChild(el);
     return el;
   }
 
+  // ─── Progress bar animation ────────────────────────────────────────────────
+  function animateProgress(durationSec) {
+    var bar = document.getElementById('sp-progress-bar');
+    if (!bar) return;
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    // Force reflow
+    bar.getBoundingClientRect();
+    bar.style.transition = 'width ' + durationSec + 's linear';
+    bar.style.width = '0%';
+  }
+
   // ─── Show / Hide ──────────────────────────────────────────────────────────
   function showNext() {
-    var filtered = events.filter(function (e) {
-      return config.enabled_types.indexOf(e.type) !== -1;
-    });
-    if (!filtered.length) return;
-
-    var event = filtered[currentIndex % filtered.length];
+    if (!snapshots.length) return;
+    var snap = snapshots[currentIndex % snapshots.length];
     currentIndex++;
+
+    var meta = TYPE_META[snap.type] || { icon: '📊', color: '#4f6ef7' };
 
     if (!popupEl) popupEl = createPopup();
 
-    document.getElementById('sp-icon').textContent = getIcon(event.type);
-    document.getElementById('sp-msg').innerHTML = formatMessage(event);
-    document.getElementById('sp-time').textContent = timeAgo(event.created_at);
+    document.getElementById('sp-icon').textContent = meta.icon;
+    document.getElementById('sp-count').textContent = Number(snap.value).toLocaleString();
+    // Strip the count from the message for the label (we show it big above)
+    var label = snap.message.replace(/^[\d,]+\s?/, '');
+    document.getElementById('sp-label').textContent = label;
+    document.getElementById('sp-week').innerHTML = buildProgressBar(snap.day_of_week, meta.color);
 
     popupEl.classList.add('sp-visible');
+    animateProgress(config.displayDuration);
 
     clearTimeout(hideTimer);
     hideTimer = setTimeout(hidePopup, config.displayDuration * 1000);
@@ -213,25 +217,33 @@
 
   // ─── Boot ─────────────────────────────────────────────────────────────────
   function boot() {
-    // 1. Fetch config
-    fetchJSON(API_BASE + '/api/config?apiKey=' + encodeURIComponent(API_KEY), function (err, data) {
-      if (!err && data && data.config) {
-        Object.assign(config, data.config);
-      }
+    // Try session cache first (same 60s window as server cache)
+    var cached = readCache();
+    if (cached && cached.length) {
+      snapshots = cached;
+      injectStyles();
+      setTimeout(function () {
+        showNext();
+        rotateTimer = setInterval(showNext, config.rotateInterval * 1000);
+      }, config.delay * 1000);
+      return;
+    }
 
-      // 2. Fetch events
-      fetchJSON(API_BASE + '/api/event?apiKey=' + encodeURIComponent(API_KEY), function (err2, data2) {
-        if (err2 || !data2 || !data2.events || !data2.events.length) return;
+    // Fetch today's growth values from the growth API
+    fetchJSON(API_BASE + '/api/growth?apiKey=' + encodeURIComponent(API_KEY), function (err, data) {
+      if (err || !data || !data.snapshots || !data.snapshots.length) return;
 
-        events = data2.events;
-        injectStyles();
+      // Only show enabled snapshots
+      snapshots = data.snapshots.filter(function (s) { return s.enabled; });
+      if (!snapshots.length) return;
 
-        // 3. Start after delay
-        setTimeout(function () {
-          showNext();
-          rotateTimer = setInterval(showNext, config.rotateInterval * 1000);
-        }, config.delay * 1000);
-      });
+      writeCache(snapshots);
+      injectStyles();
+
+      setTimeout(function () {
+        showNext();
+        rotateTimer = setInterval(showNext, config.rotateInterval * 1000);
+      }, config.delay * 1000);
     });
   }
 
@@ -242,3 +254,4 @@
     boot();
   }
 })();
+      
