@@ -27,21 +27,25 @@ function timeAgo(d: string) {
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-
-  // Guard: Next.js App Router occasionally routes /projects/new into [id].
-  // Redirect immediately so new/page.tsx handles it correctly.
-  useEffect(() => {
-    if (id === "new") { router.replace("/dashboard/projects/new"); }
-  }, [id, router]);
-
-  if (id === "new") return null;
+  
+  // ALL hooks must be declared before any conditional returns
   const [project, setProject] = useState<Project | null>(null);
   const [growthConfigs, setGrowthConfigs] = useState<GrowthConfig[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"events" | "growth" | "install">("events");
   const [copied, setCopied] = useState(false);
 
+  // Guard effect - redirect if id is "new"
   useEffect(() => {
+    if (id === "new") {
+      router.replace("/dashboard/projects");
+    }
+  }, [id, router]);
+
+  // Fetch project data
+  useEffect(() => {
+    if (id === "new") return; // Don't fetch if it's "new"
+    
     fetch(`/api/projects/${id}`)
       .then((r) => r.json())
       .then((d) => {
@@ -62,6 +66,9 @@ export default function ProjectDetailPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
+
+  // Conditional return AFTER all hooks
+  if (id === "new") return null;
 
   if (loading) {
     return (
@@ -170,7 +177,7 @@ export default function ProjectDetailPage() {
                           style={{ background: tc.bg, color: tc.color }}>
                           {tc.icon} {tc.label}
                         </span>
-                      </td>
+                       </td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#374151" }}>{event.name ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#6b7280" }}>{event.city ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#6b7280" }}>{event.product ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
@@ -252,4 +259,4 @@ export default function ProjectDetailPage() {
       )}
     </div>
   );
-          }
+            }
