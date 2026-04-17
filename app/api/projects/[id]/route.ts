@@ -38,14 +38,20 @@ export async function GET(req: NextRequest, { params }: Params) {
 
   if (!project) return NextResponse.json({ error: 'Project not found' }, { status: 404 })
 
-  // Also fetch growth configs so the dashboard tab can render them
-  const { data: growthConfigs } = await supabaseAdmin
-    .from('social_proof_growth')
-    .select('*')
-    .eq('project_id', id)
-    .order('type')
+  // Fetch growth configs — non-fatal if table doesn't exist yet
+  let growthConfigs: unknown[] = []
+  try {
+    const { data } = await supabaseAdmin
+      .from('social_proof_growth')
+      .select('*')
+      .eq('project_id', id)
+      .order('type')
+    growthConfigs = data ?? []
+  } catch (growthErr) {
+    console.warn('[GET /api/projects/[id]] Could not fetch growth configs:', growthErr)
+  }
 
-  return NextResponse.json({ project, growthConfigs: growthConfigs ?? [] })
+  return NextResponse.json({ project, growthConfigs })
 }
 
 // ─── PUT /api/projects/[id] ───────────────────────────────────────────────────
@@ -96,4 +102,4 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     .eq('user_id', user.id)
 
   return NextResponse.json({ success: true })
-        }
+}
