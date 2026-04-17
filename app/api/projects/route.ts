@@ -56,22 +56,29 @@ export async function POST(req: NextRequest) {
   // Create default widget settings for this project
   await supabaseAdmin.from('campaigns').insert({ project_id: project.id })
 
-  // Seed default (disabled) growth configs for all three types
-  const growthDefaults = [
-    { type: 'purchases', start_value: 55,  end_value: 159, message_template: '{count} people bought this week' },
-    { type: 'signups',   start_value: 12,  end_value: 45,  message_template: '{count} people joined this week' },
-    { type: 'visitors',  start_value: 18,  end_value: 72,  message_template: '{count} people visited this week' },
-  ]
-  await supabaseAdmin.from('social_proof_growth').insert(
-    growthDefaults.map((g) => ({
-      user_id: user.id,
-      project_id: project.id,
-      ...g,
-      current_value: g.start_value,
-      current_day: 0,
-      enabled: false,
-    })),
-  )
+  // Seed default (disabled) growth configs — wrapped in try/catch so project
+  // creation still succeeds if the social_proof_growth table hasn't been
+  // migrated yet (e.g. during initial setup).
+  try {
+    const growthDefaults = [
+      { type: 'purchases', start_value: 55,  end_value: 159, message_template: '{count} people bought this week' },
+      { type: 'signups',   start_value: 12,  end_value: 45,  message_template: '{count} people joined this week' },
+      { type: 'visitors',  start_value: 18,  end_value: 72,  message_template: '{count} people visited this week' },
+    ]
+    await supabaseAdmin.from('social_proof_growth').insert(
+      growthDefaults.map((g) => ({
+        user_id: user.id,
+        project_id: project.id,
+        ...g,
+        current_value: g.start_value,
+        current_day: 0,
+        enabled: false,
+      })),
+    )
+  } catch (growthErr) {
+    // Non-fatal: growth table may not exist yet. Run the migration first.
+    console.warn('[POST /api/projects] Could not seed growth configs:', growthErr)
+  }
 
   return NextResponse.json({ project }, { status: 201 })
 }
