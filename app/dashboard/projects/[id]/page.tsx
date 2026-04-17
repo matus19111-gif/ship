@@ -27,25 +27,14 @@ function timeAgo(d: string) {
 export default function ProjectDetailPage() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  
-  // ALL hooks must be declared before any conditional returns
+
   const [project, setProject] = useState<Project | null>(null);
   const [growthConfigs, setGrowthConfigs] = useState<GrowthConfig[]>([]);
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState<"events" | "growth" | "install">("events");
   const [copied, setCopied] = useState(false);
 
-  // Guard effect - redirect if id is "new"
   useEffect(() => {
-    if (id === "new") {
-      router.replace("/dashboard/projects");
-    }
-  }, [id, router]);
-
-  // Fetch project data
-  useEffect(() => {
-    if (id === "new") return; // Don't fetch if it's "new"
-    
     fetch(`/api/projects/${id}`)
       .then((r) => r.json())
       .then((d) => {
@@ -66,9 +55,6 @@ export default function ProjectDetailPage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   }
-
-  // Conditional return AFTER all hooks
-  if (id === "new") return null;
 
   if (loading) {
     return (
@@ -96,7 +82,6 @@ export default function ProjectDetailPage() {
         ← Projects
       </Link>
 
-      {/* Header */}
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-2xl font-bold mb-1" style={{ color: "#1a1d2e" }}>{project.name}</h1>
@@ -104,50 +89,31 @@ export default function ProjectDetailPage() {
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full" style={{ background: "#d1fae5", color: "#10b981" }}>● Live</span>
-          <button
-            onClick={deleteProject}
-            className="text-xs px-3 py-1.5 rounded-lg border transition-colors"
-            style={{ color: "#9ca3af", borderColor: "#e5e7eb" }}
-          >
+          <button onClick={deleteProject} className="text-xs px-3 py-1.5 rounded-lg border transition-colors" style={{ color: "#9ca3af", borderColor: "#e5e7eb" }}>
             Delete
           </button>
         </div>
       </div>
 
-      {/* API Key bar */}
       <div className="rounded-xl px-5 py-4 mb-6 flex items-center justify-between gap-4" style={{ background: "#f8f9fa", border: "1px solid #e5e7eb" }}>
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-widest mb-1" style={{ color: "#9ca3af" }}>API Key</p>
           <code className="text-sm font-mono" style={{ color: "#4f6ef7" }}>{project.api_key}</code>
         </div>
-        <button
-          onClick={() => copyText(project.api_key)}
-          className="text-xs px-3 py-1.5 rounded-lg border transition-colors"
-          style={{ color: copied ? "#10b981" : "#6b7280", borderColor: "#e5e7eb" }}
-        >
+        <button onClick={() => copyText(project.api_key)} className="text-xs px-3 py-1.5 rounded-lg border transition-colors" style={{ color: copied ? "#10b981" : "#6b7280", borderColor: "#e5e7eb" }}>
           {copied ? "✓ Copied" : "Copy"}
         </button>
       </div>
 
-      {/* Tabs */}
       <div className="flex gap-1 mb-6 p-1 rounded-xl w-fit" style={{ background: "#f3f4f6" }}>
         {(["events", "growth", "install"] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setTab(t)}
-            className="px-4 py-2 rounded-lg text-xs font-semibold transition-all capitalize"
-            style={{
-              background: tab === t ? "#fff" : "transparent",
-              color: tab === t ? "#1a1d2e" : "#9ca3af",
-              boxShadow: tab === t ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-            }}
-          >
+          <button key={t} onClick={() => setTab(t)} className="px-4 py-2 rounded-lg text-xs font-semibold transition-all"
+            style={{ background: tab === t ? "#fff" : "transparent", color: tab === t ? "#1a1d2e" : "#9ca3af", boxShadow: tab === t ? "0 1px 3px rgba(0,0,0,0.08)" : "none" }}>
             {t === "events" ? `📊 Events (${project.events?.length ?? 0})` : t === "growth" ? "📈 Growth" : "📦 Install"}
           </button>
         ))}
       </div>
 
-      {/* ── Events tab ── */}
       {tab === "events" && (
         <div className="rounded-2xl overflow-hidden" style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
           {!project.events?.length ? (
@@ -170,14 +136,12 @@ export default function ProjectDetailPage() {
                 {project.events.map((event, i) => {
                   const tc = TYPE_CONFIG[event.type] ?? TYPE_CONFIG.custom;
                   return (
-                    <tr key={event.id} className="transition-colors hover:bg-gray-50"
-                      style={{ borderBottom: i < project.events.length - 1 ? "1px solid #f9fafb" : "none" }}>
+                    <tr key={event.id} className="transition-colors hover:bg-gray-50" style={{ borderBottom: i < project.events.length - 1 ? "1px solid #f9fafb" : "none" }}>
                       <td className="px-4 py-3">
-                        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full"
-                          style={{ background: tc.bg, color: tc.color }}>
+                        <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full" style={{ background: tc.bg, color: tc.color }}>
                           {tc.icon} {tc.label}
                         </span>
-                       </td>
+                      </td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#374151" }}>{event.name ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#6b7280" }}>{event.city ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
                       <td className="px-4 py-3 text-sm" style={{ color: "#6b7280" }}>{event.product ?? <span style={{ color: "#d1d5db" }}>—</span>}</td>
@@ -191,65 +155,32 @@ export default function ProjectDetailPage() {
         </div>
       )}
 
-      {/* ── Growth tab ── */}
       {tab === "growth" && (
         <div className="rounded-2xl p-6" style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
           <div className="mb-6">
             <h2 className="font-bold text-lg mb-1" style={{ color: "#1a1d2e" }}>Smart Growth Config</h2>
-            <p className="text-sm" style={{ color: "#9ca3af" }}>
-              Set weekly start → end ranges per metric. Numbers grow smoothly day-by-day and reset each week.
-            </p>
+            <p className="text-sm" style={{ color: "#9ca3af" }}>Set weekly start → end ranges. Numbers grow day-by-day and reset each week.</p>
           </div>
-          <GrowthConfigForm
-            projectId={id}
-            initialConfigs={growthConfigs}
-            onSave={(saved) => setGrowthConfigs(saved)}
-          />
+          <GrowthConfigForm projectId={id} initialConfigs={growthConfigs} onSave={(saved) => setGrowthConfigs(saved)} />
         </div>
       )}
 
-      {/* ── Install tab ── */}
       {tab === "install" && (
         <div className="max-w-2xl space-y-5">
           {[
-            {
-              step: "1",
-              title: "Add the script to your website",
-              desc: "Paste before the closing </body> tag on every page. The widget fetches today's growth numbers automatically.",
-              code: scriptTag,
-            },
-            {
-              step: "2",
-              title: "Configure your growth ranges",
-              desc: "Go to the Growth tab above and set start/end values for purchases, signups, and visitors. Enable the counters you want to show.",
-              code: `// Growth tab → set ranges like:\n// Purchases: 55 → 159 (weekly)\n// Signups:   12 → 45  (weekly)\n// Visitors:  18 → 72  (weekly)\n//\n// The widget fetches:\n// GET ${origin}/api/growth?apiKey=${project.api_key}`,
-            },
-            {
-              step: "3",
-              title: "Verify it's working",
-              desc: "Run this to preview today's computed growth values for your widget.",
-              code: `curl "${origin}/api/growth?apiKey=${project.api_key}"`,
-            },
+            { step: "1", title: "Add the script to your website", desc: "Paste before the closing </body> tag on every page.", code: scriptTag },
+            { step: "2", title: "Configure your growth ranges", desc: "Go to the Growth tab and set start/end values, then enable the counters.", code: `curl "${origin}/api/growth?apiKey=${project.api_key}"` },
+            { step: "3", title: "Verify it's working", desc: "Run this to preview today's computed growth values.", code: `curl "${origin}/api/growth?apiKey=${project.api_key}"` },
           ].map(({ step, title, desc, code }) => (
             <div key={step} className="rounded-2xl p-5" style={{ background: "#fff", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}>
               <div className="flex items-center gap-3 mb-2">
-                <span className="w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center shrink-0"
-                  style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}>
-                  {step}
-                </span>
+                <span className="w-6 h-6 rounded-full text-white text-xs font-bold flex items-center justify-center shrink-0" style={{ background: "linear-gradient(135deg, #4f6ef7, #7c3aed)" }}>{step}</span>
                 <p className="font-semibold text-sm" style={{ color: "#1a1d2e" }}>{title}</p>
               </div>
               <p className="text-xs mb-3 ml-9" style={{ color: "#9ca3af" }}>{desc}</p>
               <div className="relative">
-                <pre className="rounded-xl p-4 text-xs font-mono overflow-x-auto leading-relaxed whitespace-pre"
-                  style={{ background: "#f8f9fa", border: "1px solid #e5e7eb", color: "#4f6ef7" }}>
-                  {code}
-                </pre>
-                <button
-                  onClick={() => copyText(code)}
-                  className="absolute top-2 right-2 text-xs px-2 py-1 rounded-lg transition-colors"
-                  style={{ background: "#e5e7eb", color: copied ? "#10b981" : "#6b7280" }}
-                >
+                <pre className="rounded-xl p-4 text-xs font-mono overflow-x-auto leading-relaxed whitespace-pre" style={{ background: "#f8f9fa", border: "1px solid #e5e7eb", color: "#4f6ef7" }}>{code}</pre>
+                <button onClick={() => copyText(code)} className="absolute top-2 right-2 text-xs px-2 py-1 rounded-lg transition-colors" style={{ background: "#e5e7eb", color: copied ? "#10b981" : "#6b7280" }}>
                   {copied ? "✓" : "Copy"}
                 </button>
               </div>
@@ -259,4 +190,4 @@ export default function ProjectDetailPage() {
       )}
     </div>
   );
-            }
+}
